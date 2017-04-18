@@ -1,0 +1,250 @@
+/**
+ * Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/)
+ * http://cssreset.com
+ */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video, input {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font-weight: normal;
+    vertical-align: baseline;
+    font-family: Apple LiGothic Medium,Apple LiSung Light,Arial,"Microsoft YaHei",sans-serif
+}
+em{    font-style: inherit;}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, menu, nav, section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* custom */
+a {
+    color: #7e8c8d;
+    text-decoration: none;
+    -webkit-backface-visibility: hidden;
+}
+
+li {
+    list-style: none;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track-piece {
+    background-color: rgba(0, 0, 0, 0.2);
+    -webkit-border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+    height: 5px;
+    background-color: rgba(125, 125, 125, 0.7);
+    -webkit-border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+    width: 5px;
+    background-color: rgba(125, 125, 125, 0.7);
+    -webkit-border-radius: 6px;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    font-family: Arial,"Microsoft YaHei",Apple LiGothic Medium,Apple LiSung Light,sans-serif
+}
+
+body {
+    -webkit-text-size-adjust: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    background-color: #fff;
+}
+/*高度*/
+.h20{height:0.27rem }
+/*字体颜色*/
+.redBg {  background: #fb5a5a !important;  }
+.bgf5{background-color: #f5f5f5}
+
+/*公用样式*/
+.jp-content{
+  margin-bottom: 1.506rem;
+}
+
+/*标题*/
+.list-title {
+  height: 0.96rem;
+  line-height:  0.96rem;
+  padding: 0 0.4rem;
+  border-bottom: 1px solid #ddd;
+}
+.list-title .border-2px{
+  display: inline-block;
+  width: 0.053rem;
+  height: 0.42rem;
+  background: #ffbd00;
+  border-radius: 0.053rem;
+  position: relative;
+  top: 0.08rem;
+}
+.list-title .title {
+  height: 0.42rem;
+  display: inline-block;
+  line-height: 0.42rem;
+  font-size: 0.373rem;
+  padding-left:0.213rem;
+}
+
+/*列表*/
+.list-item .item{
+  padding:0.34rem 0 0;
+  border-bottom: 0.133rem solid #eee;
+  overflow: hidden;
+}
+.list-item .item a {
+  width: 100%;
+}
+.list-item .item-left {
+  padding: 0 0.4rem;
+  padding-bottom:0.266rem;
+  border-bottom: 1px solid #eee;
+}
+.list-item .item-left img{
+  width: 0.533rem;
+  height: 0.533rem;
+}
+.item-left .item-name {
+  color: #333;
+  font-size:0.32rem;
+  line-height: 0.55rem;
+  white-space: nowrap;
+  vertical-align: top;
+  display: inline-block;
+  margin-left: 0.106rem;
+}
+.item-left .text-right {
+  float: right;
+  color: #333;
+  font-size: 0.28rem;
+  line-height: 0.666rem;
+}
+.item-left .text-right i {
+  color: #fb5a5a;
+  margin-right: 0.106rem;
+}
+.item-left .text-right span {
+  color: #fb5a5a;
+}
+
+.list-item .item-right{
+  display: flex;
+  display: -webkit-flex;
+  padding: 0.346rem 0.4rem 0px;
+  box-sizing: border-box;
+  height: 2.13rem;
+}
+.item-right>div {
+  flex: 1;
+  -webkit-flex: 1;
+}
+.item-div>span {
+  font-size: 0.32rem;
+  color: #666;
+  line-height: 0.746rem;
+  white-space: nowrap;
+  display: block;
+}
+.item-div>span>span strong{    color: #fb5a5a;}
+.item-div>span>span {  color: #333;  margin-left: 0.106rem;  }
+
+.item-right .price {
+  position: relative;
+  flex: 0 0 1.94rem;
+  -webkit-flex: 0 0 1.94rem;;
+  width: 1.94rem;;
+}
+.price .new-price, .price .text {
+  display: block;
+}
+.new-price {
+  border: 1px solid #fb5a5a;
+  border-radius: 0.06rem;
+}
+.new-price {
+  width: 1.866rem;
+  font-size: 0.32rem;
+  color: #fb5a5a;
+}
+.new-price span {
+  text-align: center;
+  line-height: 0.8rem;
+  padding: 0 0.133rem;
+}
+.new-price span.text {
+  background-color: #fb5a5a;
+  color: #fff;
+}
+.prices {
+  line-height: 0.64rem !important;
+  display: block;
+}
+
+/*详情页*/
+.deta-title{  padding: 0.32rem 0px 0.26rem 0.4rem;  color: #e25917;  font-size: 0.4rem;  line-height: 0.5rem;  }
+.deta-title i{  margin-right:0.16rem  }
+
+/*mui.css修改*/
+.mui-table-view-cell{  padding: 0.29rem 0.4rem; font-size: 0.37rem }
+.mui-badge{     font-size: 0.37rem}
+.mui-popup{width: 80%}
+.mui-popup-title{font-size: 0.96rem;}
+.mui-popup-title+.mui-popup-text{font-size: 0.4rem;color: #333}
+.mui-popup-buttons,.mui-popup-button{height:1.17rem;line-height: 1.17rem }
+.mui-popup-button.mui-popup-button-bold{font-size: 0.4rem;font-weight: 500}
+.mui-input-group .mui-input-row{height: 1.33rem;line-height: 1.33rem;font-size:0.4rem }
+.mui-input-row label{line-height: inherit;padding: 0 0 0 0.4rem;    color: #333;}
+.mui-input-row label~input{    padding: 0;  margin: 0.38rem 0;}
+.mui-bar{height: 1rem;background-color: #fff }
+.mui-bar .mui-title{line-height: 1rem;font-size: 0.4rem;color: #007aff }
+.mui-bar-nav~.mui-content{padding-top: 1.2rem;}
+.mui-popup-button{font-size: 0.4rem;}
+.mui-toast-container{bottom :9%}
+.mui-toast-message{  font-size:0.32rem;  padding: 0.3rem;  height: auto;  }
+.mui-content{background-color: #fff}
+.mui-segmented-control{font-size:0.37rem ;height: 0.8rem}
+.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active{    color: #fb5a5a;  border-bottom: 4px solid #fb5a5a;  }
+.mui-table-view-cell:after{    left: 0px}
+

@@ -1,0 +1,125 @@
+@font-face {
+  font-family: 'jp';
+  src:  url('./fonts/jp.eot?kdm9ru');
+  src:  url('./fonts/jp.eot?kdm9ru#iefix') format('embedded-opentype'),
+    url('./fonts/jp.ttf?kdm9ru') format('truetype'),
+    url('./fonts/jp.woff?kdm9ru') format('woff'),
+    url('./fonts/jp.svg?kdm9ru#jp') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="jp-"], [class*=" jp-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'jp' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.jp-ico_residual_commission:before {
+  content: "\e91f";
+}
+.jp-ico_residual_task:before {
+  content: "\e920";
+}
+.jp-btn_account:before {
+  content: "\e900";
+}
+.jp-btn_accounthl:before {
+  content: "\e901";
+}
+.jp-btn_add_picture:before {
+  content: "\e902";
+}
+.jp-btn_choice:before {
+  content: "\e903";
+}
+.jp-btn_delete:before {
+  content: "\e904";
+}
+.jp-btn_head_portrait:before {
+  content: "\e905";
+}
+.jp-btn_home:before {
+  content: "\e906";
+}
+.jp-btn_homehl:before {
+  content: "\e907";
+}
+.jp-btn_nochoice:before {
+  content: "\e908";
+}
+.jp-btn_right:before {
+  content: "\e909";
+}
+.jp-ico_account_information:before {
+  content: "\e90a";
+}
+.jp-ico_consultation:before {
+  content: "\e90b";
+}
+.jp-ico_customer_service:before {
+  content: "\e90c";
+}
+.jp-ico_fill_information:before {
+  content: "\e90d";
+}
+.jp-ico_fund_details:before {
+  content: "\e90e";
+}
+.jp-ico_information_authentication:before {
+  content: "\e90f";
+}
+.jp-ico_password:before {
+  content: "\e910";
+}
+.jp-ico_platform_introduction:before {
+  content: "\e911";
+}
+.jp-ico_surplus_cash:before {
+  content: "\e912";
+}
+.jp-ico_task_details:before {
+  content: "\e913";
+}
+.jp-ico_task_log:before {
+  content: "\e914";
+}
+.jp-ico_telepohone:before {
+  content: "\e915";
+}
+.jp-ico_time_limit:before {
+  content: "\e916";
+}
+.jp-ico_verification_code:before {
+  content: "\e917";
+}
+.jp-ico_wait:before {
+  content: "\e918";
+}
+.jp-ico_warn:before {
+  content: "\e919";
+}
+.jp-ico_withdrawals_data:before {
+  content: "\e91a";
+}
+.jp-ico_account_information2:before {
+  content: "\e91b";
+}
+.jp-log-off:before {
+  content: "\e91c";
+}
+.jp-btn_add2_picture:before {
+  content: "\e91d";
+}
+.jp-btn_reduce_picture:before {
+  content: "\e91e";
+}

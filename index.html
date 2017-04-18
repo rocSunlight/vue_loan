@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel ="Shortcut Icon" href="static/favicon.ico">
+
+  <!--muse-ui的字体文件-->
+  <link rel="stylesheet" href="static/css/jp-icon.css">
+  <link rel="stylesheet" href="static/css/mui.min.css">
+  <!--引入初始化文件-->
+  <link rel="stylesheet" href="static/css/reset.css">
+  <script src="static/js/mui.min.js"></script>
+
+</head>
+<body>
+  <div id="app" >
+    <router-view></router-view>
+  </div>
+</body>
+<script>
+  // 设置手机端自适应大小
+  var scale = 1 / devicePixelRatio;
+  document.querySelector('meta[name="viewport"]').setAttribute('content','initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');
+  document.documentElement.style.fontSize = document.documentElement.clientWidth / 10 + 'px';
+</script>
+</html>
