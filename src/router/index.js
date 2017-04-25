@@ -13,6 +13,12 @@ import Balance2 from 'components/personal/balance2'
 import Cash from 'components/personal/cash'
 import Account from 'components/personal/account'
 import Profile from 'components/personal/profile'
+import Taskall from 'components/personal/Taskall'
+import Audit from 'components/personal/audit'
+import Rejected  from 'components/personal/rejected'
+import Successful  from 'components/personal/successful'
+import Failure   from 'components/personal/failure'
+import Dotask2   from 'components/personal/dotask2'
 import Task from 'components/personal/task'
 import Login from 'components/login/login'
 import Registered from 'components/login/registered'
@@ -133,7 +139,57 @@ const router =  new Router({
       meta: {
         title:'任务记录'
       },
-      component : Task
+      component : Task,
+      children: [
+        {
+          path : 'taskall',
+          name: 'Taskall',
+          meta : {
+            title :'任务记录'
+          },
+          component : Taskall,
+        },
+        {
+          path : 'audit',
+          name: 'Audit',
+          meta : {
+            title :'审核中'
+          },
+          component : Audit,
+        },
+        {
+          path : 'rejected',
+          name: 'Rejected',
+          meta : {
+            title :'驳回'
+          },
+          component : Rejected,
+        },
+        {
+          path : 'successful',
+          name: 'Successful',
+          meta : {
+            title :'审核成功'
+          },
+          component : Successful,
+        },
+        {
+          path : 'failure',
+          name: 'Failure',
+          meta : {
+            title :'审核失败'
+          },
+          component : Failure,
+        }
+      ]
+    },
+    {
+      path : '/dotask2/:userId',
+      name: 'Dotask2',
+      meta : {
+        title :'报单详情'
+      },
+      component : Dotask2,
     },
     {
       path: '/login',
@@ -148,7 +204,8 @@ const router =  new Router({
       component: Registered,
       name:'Registered',
       meta: {
-        title: '注册账号'
+        title: '注册账号',
+        auth: false
       }
     },
     {
@@ -156,7 +213,8 @@ const router =  new Router({
       component: Reset,
       name:'Reset',
       meta: {
-        title: '重置密码'
+        title: '重置密码',
+        auth: false
       }
     }
   ]

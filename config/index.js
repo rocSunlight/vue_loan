@@ -30,7 +30,7 @@ module.exports = {
     proxyTable: {
       //解决跨域远程服务器
       '/api': {
-        target: '',
+        target: 'http://192.168.1.168:8089/',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/api'

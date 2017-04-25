@@ -4,16 +4,16 @@
       <div class="inform-wrapper">
         <div class="avatar">
           <i class="jp-btn_head_portrait"></i>
-          <span>你好</span>
+          <span v-text="account.real_name"></span>
         </div>
         <div class="h20 bgf5"></div>
         <div class="inform-list">
           <div class="title"><i class="jp-ico_account_information2"></i><span>账户信息</span></div>
           <ul class="mui-table-view">
-            <li class="mui-table-view-cell"><span>可用金额</span> <span class=" min-data-span">120</span></li>
-            <li class="mui-table-view-cell"><span>冻结金额</span> <span class=" min-data-span">120</span></li>
-            <li class="mui-table-view-cell"><span>提现金额</span> <span class="min-data-span">120</span></li>
-            <li class="mui-table-view-cell"><span>赚取金额</span> <span class=" min-data-span">120</span></li>
+            <li class="mui-table-view-cell"><span>可用金额</span> <span class=" min-data-span" >{{account.account_money  | default  }}</span></li>
+            <li class="mui-table-view-cell"><span>冻结金额</span> <span class=" min-data-span" >{{account.freeze  | default}}</span></li>
+            <li class="mui-table-view-cell"><span>提现金额</span> <span class="min-data-span" >{{account.withdraw_money | default}}</span></li>
+            <li class="mui-table-view-cell"><span>赚取金额</span> <span class=" min-data-span" >{{account.total  | default}}</span></li>
           </ul>
         </div>
 
@@ -23,7 +23,36 @@
 </template>
 
 <script type="text/ecmascript-6">
+  export default{
 
+    data() {
+      return {
+        token1 : JSON.parse(localStorage.user),
+        account : {}
+      }
+    },
+    filters: {
+      default: function (value) {
+        if(value == undefined){
+            value = '0.00'
+            return value
+        }
+        if(value == '0'){
+            value = value + '.00'
+           return value
+        }
+        return value
+      }
+    },
+    mounted(){
+        this.$http.get('api/user/account',{params: {token: this.token1.token}}).then(response => {
+            this.account = response.body.account
+        })
+    },
+    methods:{
+
+    }
+  }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
@@ -46,7 +75,7 @@
         display: block;
         font-size: 0.42rem;
         color: #fff;
-        margin-top: 0.133rem;
+        margin-top: 0.533rem;
       .inform-list .title
         font-size: 0.373rem;
         color: #fb5a5a;

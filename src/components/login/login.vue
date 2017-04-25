@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="login ">
     <header class="mui-bar mui-bar-nav">
       <h1 class="mui-title">登录</h1>
     </header>
@@ -24,12 +24,16 @@
         </div>
       </form>
     </div>
+
+    <!--底部导航-->
+    <nav-gation :clicked="false" :clicked2="true"></nav-gation>
   </div>
 </template>
 
-<script >
+<script  type="text/ecmascript-6">
   import { mapActions } from 'vuex'
   import { USER_SIGNIN } from '../../style/js/user'
+  import Navigation from '../navigation/navigation'
 
 
   export default {
@@ -66,31 +70,32 @@
         this.$http.post('/api/user/login', {username:this.form.username,password:this.password}).then(response=>{
             // 获取后台返回的token状态
           if(response.body.state === 'fail'){ // 判断后台返回state数据类型为fail则返回
-            console.log(response.body)
             mui.toast('用户名或密码错误')
             return false
           }
           //用户登录成功后储存token状态传给后台
           this.form.token = response.body.data.token
 
-          this.$http.post('/api/user/user', {token: this.form.token}).then(response => {
+
             //判断登录 成功后跳转到个人中心页面
 
             this.USER_SIGNIN(this.form)
             mui.toast('登录成功')
             this.$router.replace({path: '/personal'})
-          })
 
-        },response => {
-          console.log('请求失败1')
+
         })
 
       }
+    },
+    components: {
+      'nav-gation' : Navigation,
     }
   }
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" rel="stylesheet/stylus" >
+
   .login
     .mui-content
       background-color #f5f5f5

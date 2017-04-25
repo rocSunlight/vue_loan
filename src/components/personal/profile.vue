@@ -4,22 +4,34 @@
       <div class="inform-wrapper">
         <div class="avatar">
           <i class="jp-btn_head_portrait"></i>
-          <span>你好</span>
+          <span v-text="real_name"></span>
         </div>
         <div class="h20 bgf5"></div>
         <div class="inform-list">
           <div class="title"><i class="jp-ico_information_authentication"></i><span>提现必填信息</span></div>
           <div class="prompt"><i class="jp-ico_warn"></i><span>必须真实有效，否则提现无法到账。不能修改，若变化请联系客服</span></div>
           <ul class="mui-table-view">
-            <li class="mui-table-view-cell"><span>真实姓名<strong>*</strong></span> <input v-model="real_name" name="real_name" type="text" class="min-input" placeholder="请输入您的真实姓名" ></li>
-            <li class="mui-table-view-cell"><span>身份证号<strong>*</strong></span><input name="card_id"  type="text" class="min-input" placeholder="请输入您的身份证号" ></li>
-            <li class="mui-table-view-cell"><span>支付宝账号<strong>*</strong></span><input name="ali_account"  type="text" class="min-input" placeholder="请输入您的支付宝账号" ></li>
-            <li class="mui-table-view-cell"><span>常用邮箱<strong>*</strong></span><input name="email" type="text" class="min-input" placeholder="请输入您的常用邮箱" ></li>
-            <li class="mui-table-view-cell"><span>常用QQ<strong>*</strong></span><input name="qq" type="text" class="min-input" placeholder="请输入您的常用QQ" readonly=""></li>
-            <li class="mui-table-view-cell"><span>紧急电话<strong>*</strong></span><input name="emergency_mobile"  type="text" class="min-input" placeholder="请输入您的紧急电话" ></li>
+            <li class="mui-table-view-cell" ><span>真实姓名<strong>*</strong></span>
+              <input :readonly="!real_name === false  "  :value="real_name" id="real_name" type="text" class="min-input" placeholder="请输入您的真实姓名" >
+            </li>
+            <li class="mui-table-view-cell"><span>身份证号<strong>*</strong></span>
+              <input :readonly="!card_id === false " id="card_id" :value="card_id" type="text" class="min-input" placeholder="请输入您的身份证号" >
+            </li>
+            <li class="mui-table-view-cell"><span>支付宝账号<strong>*</strong></span>
+              <input :readonly="!ali_account === false " id="ali_account"  :value="ali_account" type="text" class="min-input" placeholder="请输入您的支付宝账号" >
+            </li>
+            <li class="mui-table-view-cell"><span>常用邮箱<strong>*</strong></span>
+              <input :readonly="!email === false " id="email"  :value="email" type="text" class="min-input" placeholder="请输入您的常用邮箱" >
+            </li>
+            <li class="mui-table-view-cell"><span>常用QQ<strong>*</strong></span>
+            <input :readonly="!qq === false " id="qq" :value="qq" type="text" class="min-input" placeholder="请输入您的常用QQ" >
+          </li>
+            <li class="mui-table-view-cell"><span>紧急电话<strong>*</strong></span>
+              <input :readonly="!emergency_mobile === false " id="emergency_mobile" :value="emergency_mobile"  type="text" class="min-input" placeholder="请输入您的紧急电话" >
+            </li>
           </ul>
         </div>
-        <div class="btn-div">
+        <div class="btn-div" v-show="sub">
           <button type="submit" class="mui-btn" @click="submit">确定</button>
         </div>
       </div>
@@ -32,32 +44,53 @@
     data() {
       return {
         token1: JSON.parse(localStorage.user),
-        real_name :'',           //姓名
+        real_name : '',           //姓名
         card_id :'',            //身份证
         ali_account :'',        //支付宝账号
-        emai :'',               //邮箱
+        email :'',               //邮箱
         qq :'',                //qq
         emergency_mobile :'', //紧急电话
+        sub : false,
       }
     },
     mounted(){
 
-      this.$nextTick(function () {
-//        this.$http.post('/api/user/profile', {params: {token: this.token1.token}}).then(response=>{
-//          console.log(response.body)
-//        })
+      this.$http.get('/api/user/profile', {params: {token: this.token1.token}}).then(response =>{
+        var user = response.body.user
+        this.real_name = user.real_name
+        this.card_id = user.card_id
+        this.ali_account = user.ali_account
+        this.email = user.email
+        this.qq = user.qq
+        this.emergency_mobile = user.emergency_mobile
+
+        if(this.real_name === '' || this.card_id ==='' || this.ali_account === '' || this.email === '' || this.qq === '' || this.emergency_mobile === ''){
+          this.sub = true
+        }else {
+          this.sub = false
+        }
       })
+
     },
     methods: {
       submit() {
+        //将要请求的参数
+        const _real_name = $('#real_name').val()
+        const _card_id = $('#card_id').val()
+        const _ali_account = $('#ali_account').val()
+        const _email = $('#email').val()
+        const _qq = $('#qq').val()
+        const _emergency_mobile = $('#emergency_mobile').val()
 
-        this.$http.post('/api/user/profile',{token: this.token1.token,real_name:this.real_name}).then(response=>{
-
-            console.log(response)
+        this.$http.post('/api/user/profile',{token: this.token1.token,real_name:_real_name,card_id:_card_id,ali_account:_ali_account,email:_email,qq:_qq,emergency_mobile:_emergency_mobile}).then(response=>{
+            mui.toast(response.body.info)
         })
-      }
+      },
+
     }
   }
+
+
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">

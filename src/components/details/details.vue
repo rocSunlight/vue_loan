@@ -1,3 +1,4 @@
+<script src="../../../../../asd.js"></script>
 <template>
   <div class="details" id="myList">
     <div class="jp-content ">
@@ -37,7 +38,7 @@
           </li>
           <li class="mui-table-view-cell">
             截止日期
-            <span class="mui-badge">{{info.end_time | time}}</span>
+            <span class="mui-badge" >{{info.end_time | formatDate }}</span>
           </li>
 
           <li class="mui-table-view-cell">
@@ -73,7 +74,7 @@
         <div class="food-right">
           <div  v-if="!declaration"  class="pate cys" id="cys" @click="participate">参与任务</div>
           <router-link  v-if="declaration" id="goto" class="pate2" :to="{name : 'Dotask' , params: { userId: urlId }}" @click="dotask()" >
-           报单<span class="suc"></span>
+           报单<span class="suc">0时00分00秒</span>
           </router-link>
         </div>
     </div>
@@ -81,6 +82,8 @@
 </template>
 
 <script type="text/ecmascript-6">
+  //formatDate时间戳转换
+  import {formatDate} from '../../../static/js/date'
   import '../../../static/js/jquery-1.4.4.min'
   import '../../../static/js/mui.previewimage'
   import '../../../static/js/mui.zoom'
@@ -90,8 +93,8 @@
     document.location.href=this.href
   })
 
-
-
+  //timer用于储存setInterval传来的id
+  var timer =''
   export default {
 
     data() {
@@ -102,41 +105,56 @@
         divshow  : false,
         is_do:false,
         endTime:'',
-        token1 : {},
+        token1 :'',
         urlId: this.$route.params.userId //获取从外部跳转的链接id
       }
     },
-
     //生命周期
-    mounted(){
+    created() {
       this.$nextTick(function () {
-        this.cartView()
+        if(localStorage.user === undefined){
+          this.token1 = ''
+        }else {
+          const  tk = JSON.parse(localStorage.user)
+          this.token1 = tk.token
+        }
+        this.$http.get('api/Home/infos/id/' + this.urlId,{params:{token:this.token1,id:this.urlId}}).then(response => {
+          this.info = response.body.info   //获取数据
+          this.user = response.body.c_name[response.body.info.c_id]  //获取商家信息
+          this.endTime = response.body.djs
+          if(this.endTime>0){
+            this.declaration = true
+            this.timeEnd(this.endTime)
+          }
+      })
+
         //调用滚动条
         mui('.mui-scroll-wrapper').scroll({
           deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
         })
 
-
-        $(".uploadContent img").click(function(){
-          var img_url=jQuery(this).attr("src");
-        })
         mui.previewImage()
 
       })
     },
+    filters: {
+      formatDate(time) {
+        let date = new Date(parseInt(time)*1000);
+        return formatDate(date, 'yyyy-MM-dd');
+      }
+    },
+    //updated数据加载完后可以操作 DOM
+    updated(){
+      $(".uploadContent img").attr('data-preview-group',"1" );
+      $(".uploadContent img").attr('data-preview-src',"" );
+    },
+
     //实例方法
     methods:{
-      cartView () {
-        this.$http.jsonp('http://192.168.1.168:8089/api/Home/infos/id/'+this.urlId).then(response=>{
-          this.info = response.body.info   //获取数据
-          this.user = response.body.c_name[response.body.info.c_id]  //获取商家信息
-          this.endTime = response.body.djs
-          console.log(response.body)
-        })
-      },
       contact () {
         //弹出QQ框
         mui.alert('<span class="suc">如有疑问，请咨询闪财网客服</span><br/> <small class="c999">(长按复制QQ或微信公众号)</small> <br> <span class="red"><span >QQ:</span>'+this.info.qq+'</span>', '<i class="jp-ico_customer_service"></i>', '我知道了');
+
       },
       // 点击参与报单
       participate() {
@@ -147,22 +165,24 @@
             this.token1 = JSON.parse(tok)
           const userId = this.info.id
           const _this =this
-          console.log(_this.info.url)
           mui.confirm('<span class="suc">请在300分钟之内完成任务并报单</span><br/> <small class="c999">(长按复制链接)</small> <br>  <input type="text" value="'+_this.info.url+'" style="width: auto; height: 0.8rem; padding: .2em; margin: 0.32rem 0; "/></span> ','<span style="font-size: 0.6rem">提示</span>',new Array('取消','确定'),function (e) {
             var  is_do = false
+
             if (e.index == 1 && is_do==false) {
               is_do = true;
-              _this.$http.post('/api/home/willtask',{token: _this.token1.token}).then(response=>{
-                  console.log(response.body)
+              _this.$http.post('/api/home/willtask',{token: _this.token1.token,id:_this.info.id}).then(response=>{
+                _this.declaration = true
+                $("#show_url").show();
+                $("#djs").val(response.body.djs);
+                _this.timeEnd(300*60)
               })
+            }else {
+              _this.declaration = false
             }
           })
-            this.declaration = true
-            if(this.endTime>0){
-                console.log(1)
-              this.timeEnd(this.timeEnd);
-              $("#show_url").show();
-              $("#goto").show();
+
+            if(_this.endTime>0){
+              _this.timeEnd(_this.endTime);
               mui(document).off("click","#cys");
             }
 
@@ -173,31 +193,31 @@
         }
       },
       //报单剩余时间
-      timeEnd(value) {
-        window.setInterval(function(){
+      timeEnd(value){
+        //timer用于储存setInterval传来的id
+        timer =  window.setInterval(function(){
           var day=0,
             hour=0,
             minute=0,
-            second=0;//时间默认值       
+            second=0;//时间默认值   
           if(value > 0){
-            day = Math.floor(intDiff / (60 * 60 * 24));
-            hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
-            minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
-            second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
-          }else{
-            $("#goto").hide();
-            $("#cys").show();
-            $("#show_url").hide();
+            day = Math.floor(value / (60 * 60 * 24));
+            hour = Math.floor(value / (60 * 60)) - (day * 24);
+            minute = Math.floor(value / 60) - (day * 24 * 60) - (hour * 60);
+            second = Math.floor(value) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
           }
           if (minute <= 9) minute = '0' + minute;
           if (second <= 9) second = '0' + second;
           var tm ='报单<span class="suc">'+hour+'时'+minute+'分'+second+'秒</spa>';
           $("#goto").html(tm);
           value--;
-          $("#djs").val(value);
         }, 1000);
+
       }
 
+    },
+    beforeDestroy(){
+      clearInterval(timer)
     }
   }
 </script>

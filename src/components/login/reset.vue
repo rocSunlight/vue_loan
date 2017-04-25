@@ -5,22 +5,22 @@
       <h1 class="mui-title">找回密码</h1>
     </header>
     <div class="mui-content">
-      <form id='login-form' class="mui-input-group"  @submit.prevent="submit">
+      <form class="mui-input-group" action="http://192.168.1.168:8089/api/user/reset" method="POST" id="registerForm" >
         <div class="mui-input-row">
           <label><i class="jp-ico_telepohone"></i></label>
-          <input style="width: 54%;margin-right:30%;" name="username" id='account' type="text" class="mui-input-clear mui-input" placeholder="请填写账号" v-model="form.username">
-          <a class="sms" href="#">获取手机验证码</a>
+          <input style="width: 54%;margin-right:30%;" name="mobile" id='account' type="text" class="mui-input-clear mui-input" placeholder="请输入手机号" >
+          <span class="sms" id="sms1">获取手机验证码</span>
         </div>
         <div class="mui-input-row">
           <label><i class="jp-ico_verification_code"></i></label>
-          <input name="password" id='password' type="password" class="mui-input-clear mui-input" placeholder="请填写密码" v-model="password">
+          <input name="mobile_code" id='note' type="text" class="mui-input-clear mui-input" placeholder="输入短信验证码" >
         </div>
         <div class="mui-input-row">
           <label><i class="jp-ico_password"></i></label>
-          <input name="password" id='password' type="password" class="mui-input-clear mui-input" placeholder="请填写密码" v-model="password">
+          <input name="password" id='password' type="password" class="mui-input-clear mui-input" placeholder="请填写密码" >
         </div>
         <div class="mui-content-padded">
-          <button id='login' class="mui-btn mui-btn-block mui-btn-yell">重置密码</button>
+          <button id='reg' class="mui-btn mui-btn-block mui-btn-yell">重置密码</button>
         </div>
         <div class="mui-content-padded oauth-area">
 
@@ -31,62 +31,113 @@
 </template>
 
 <script >
-  import { mapActions } from 'vuex'
-  import { USER_SIGNIN } from '../../style/js/user'
 
-  export default {
-    data() {
-      return {
-        btn: false, //true 已经提交过， false没有提交过
-        password: '',
-        form: {
-          token:'',
-          username: ''
+  (function($, doc) {
+    $.init();
+    $.plusReady(function() {
+      var settings = app.getSettings();
+      var regButton = doc.getElementById('reg');
+      var accountBox = doc.getElementById('account');
+      var passwordBox = doc.getElementById('password');
+      var passwordConfirmBox = doc.getElementById('password_confirm');
+      var emailBox = doc.getElementById('email');
+      regButton.addEventListener('tap', function(event) {
+        var regInfo = {
+          account: accountBox.value,
+          password: passwordBox.value,
+          email: emailBox.value
+        };
+        var passwordConfirm = passwordConfirmBox.value;
+        if (passwordConfirm != regInfo.password) {
+          plus.nativeUI.toast('密码两次输入不一致');
+          return;
         }
-      }
-    },
-
-    methods: {
-      ...mapActions([USER_SIGNIN]),
-      submit() {
-        //判断是否点击提交后验证用户名和密码
-        this.btn = true
-        if(!this.form.username && !this.password) {
-          mui.toast('用户名和密码不能为空')
-          return
-        }
-        if(!this.form.username){
-          mui.toast('请输入用户名')
-          return
-        }
-        if(!this.password){
-          mui.toast('请输入密码')
-          return
-        }
-
-        //向后端发送数据，返回token状态
-        this.$http.post('/api/user/login', {username:this.form.username,password:this.password}).then(response=>{
-          // 获取后台返回的token状态
-          if(response.body.state === 'fail'){ // 判断后台返回state数据类型为fail则返回
-            mui.toast('用户名或密码错误')
-            return false
+        app.reg(regInfo, function(err) {
+          if (err) {
+            plus.nativeUI.toast(err);
+            return;
           }
-          //用户登录成功后储存token状态传给后台
-          this.form.token = response.body.data.token
-          this.$http.post('/api/user/user', {token: this.form.token}).then(response => {
-            //判断登录 成功后跳转到个人中心页面
-            this.USER_SIGNIN(this.form)
-            mui.toast('登录成功')
-            this.$router.replace({path: '/personal'})
-          })
+          plus.nativeUI.toast('注册成功');
+          /*
+           * 注意：
+           * 1、因本示例应用启动页就是登录页面，因此注册成功后，直接显示登录页即可；
+           * 2、如果真实案例中，启动页不是登录页，则需修改，使用mui.openWindow打开真实的登录页面
+           */
+          plus.webview.getLaunchWebview().show("pop-in",200,function () {
+            plus.webview.currentWebview().close("none");
+          });
 
-        },response => {
-          console.log('请求失败1')
-        })
+        });
+      });
 
+    });
+
+    $(document).on('click', '#sms1', function() {
+      $this = $(this)[0];
+      if($this.getAttribute('disabled') == 'disabled') {
+        return false;
       }
-    }
-  }
+      $.ajax('api/code/send_reset', {
+        type: 'POST',
+        dataType: 'json',
+        data: {
+          'mobile': $('input[name=mobile]')[0].value
+        },
+        success: function(data) {
+          if(data.state == 'success') {
+            $this.innerHTML = '发送成功';
+            $this.setAttribute('disabled', 'disabled');
+            $.toast('短信验证码发送成功');
+          } else {
+            if(data.msg) {
+              $.toast(data.msg);
+            } else {
+              $.toast('短信验证码发送失败');
+            }
+          }
+        },
+        error: function(data) {
+          $.toast('接口出错，请稍后再试');
+        }
+      })
+    });
+  }(mui, document));
+
+  mui.ready(function() {
+    mui(document).on('submit', '#registerForm', function() {
+      mui.ajax('api/user/reset', {
+        type: 'POST',
+        dataType: 'json',
+        data: {
+          mobile: mui('input[name=mobile]')[0].value,
+          mobile_code: mui('input[name=mobile_code]')[0].value,
+          password: mui('input[name=password]')[0].value
+        },
+        success: function(data) {
+
+          if(data.state == 'fail') {
+//            console.log(data.info);
+          } else {
+            mui.alert('重置密码成功', '', function() {
+              document.location.href='#/login';
+            });
+          }
+        },
+        error: function(data) {
+          console.log(data);
+        }
+      });
+
+      return false;
+    });
+
+  });
 </script>
+
+<style scope>
+  mui-toast-message{
+    line-height: 5rem;
+  }
+</style>
 
 

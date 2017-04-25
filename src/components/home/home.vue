@@ -73,7 +73,8 @@
   //  底部导航
   import Navigation from '../navigation/navigation'
 
-  var _this = {}
+  var _this = {}//用于储存vue数据的this
+  var dataPage = 1//上拉加载数据的开始位置
   export default {
     //mounted 生命周期钩子
     data() {
@@ -86,7 +87,7 @@
         t_page : ''
       }
     },
-    mounted() {
+    created() {
       _this = this
 
       //实例化轮埠图
@@ -96,14 +97,12 @@
         // 如果需要分页器
         pagination: '.swiper-pagination',
       })
-      this.$nextTick(function () {
-        this.$http.get('/api/home/indexs' ).then(response=> {
-          console.log(response)
-          this.nexturl = response.nexturl
-          this.t_page = response.body.t_page
-          const rel = response.body
-          this.someData = rel.info
-        })
+
+      this.$http.get('/api/home/indexs' ).then(response=> {
+        this.nexturl = response.nexturl
+        this.t_page = response.body.t_page
+        const rel = response.body
+        this.someData = rel.info
       })
 
     },
@@ -115,16 +114,16 @@
         bottomed: function () {
           var me = this
           var page = _this.t_page  //获取后台传来的数据页数
-          if (me.page < page) {
+          if (dataPage < page) {
             mui.ajax({
-              url: 'http://192.168.1.168:8089/Api/Home/indexs/p/' + (me.page + 1) +'.html',
+              url: 'http://192.168.1.168:8089/Api/Home/indexs/p/' + (dataPage + 1) +'.html',
               success: function (data) {
                setTimeout(function () {
-                 me.page++ // 请求成功将page加1，失败则不要改变page
+                 dataPage++ // 请求成功将page加1，失败则不要改变page
                  var jons = JSON.parse(data)
                  _this.someData = _this.someData.concat(jons.info)
-                 if (me.page === _this.t_page) {
-                   me.tip = '<img src="../../../static/image/006.gif" alt=""/>已全部加载完成'
+                 if (dataPage === _this.t_page) {
+                   me.tip = '已全部加载完成'
                  }
                },300)
               }
@@ -146,6 +145,7 @@
   .home
     height 100%;
     .jp-content
+      margin-bottom: 0rem;
       .swiper-pagination-bullet
         width 0.2rem
         height 0.2rem

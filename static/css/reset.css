@@ -240,7 +240,7 @@ body {
 .mui-bar-nav~.mui-content{padding-top: 1.2rem;}
 .mui-popup-button{font-size: 0.4rem;}
 .mui-toast-container{bottom :9%}
-.mui-toast-message{  font-size:0.32rem;  padding: 0.3rem;  height: auto;  }
+.mui-toast-message{  font-size:0.32rem;  padding: 0.3rem;  height: auto;line-height: 0.4rem;text-align: left  }
 .mui-content{background-color: #fff}
 .select-nav{height: 0.8rem;display: flex;display: -webkit-flex;}
 .select-nav .select-item {flex: 1;-webkit-flex:1;font-size:0.37rem ;text-align: center}

@@ -5,12 +5,12 @@
             <div class="user">
               <div class="avatar"><a href="#"><i class="jp-btn_head_portrait"></i></a></div>
               <div class="user-name">
-                <h1>12312312312</h1>
+                <h1>{{user.mobile}}</h1>
               </div>
             </div>
             <div class="user-money">
               <h1>我的余额<small>（元）</small></h1>
-              <span>2,000.00</span>
+              <span>{{user.money}}</span>
               <router-link  class="mui-btm withdrawal" to="/withdrawal">提现</router-link>
             </div>
           </div>
@@ -25,28 +25,28 @@
               </li>
               <li class="mui-table-view-divider"></li>
               <li class="mui-table-view-cell">
-                <router-link class="mui-navigate-right" to="/task">
+                <router-link class="mui-navigate-right" to="/task/taskall">
                   <i class="jp-iconmyinvite"></i>
                   <span><i class="jp-ico_task_log"></i>任务记录</span>
                 </router-link>
               </li>
               <li class="mui-table-view-divider"></li>
               <li class="mui-table-view-cell last">
-                <router-link class="mui-navigate-right" to="/profile">
+                <router-link class="mui-navigate-right" to="/profile" >
                   <i class="jp-iconranking_list"></i>
                   <span><i class="jp-ico_account_information"></i>用户信息</span>
                 </router-link>
               </li>
               <li class="mui-table-view-divider"></li>
               <li class="mui-table-view-cell last">
-                <router-link class="mui-navigate-right" to="/account">
+                <router-link class="mui-navigate-right" to="/account" :username="username">
                   <i class="jp-iconranking_list"></i>
                   <span><i class="jp-ico_account_information2"></i>账户信息</span>
                 </router-link>
               </li>
               <li class="mui-table-view-divider"></li>
-              <li class="mui-table-view-cell last">
-              <span  @click="submit">
+              <li class="mui-table-view-cell last"  @click="submit">
+              <span >
                 <i class="jp-iconranking_list"></i>
                 <span ><i class="jp-log-off"></i>退出账户</span>
               </span>
@@ -70,14 +70,16 @@
   export default {
     data() {
       return {
-        token1 :JSON.parse(localStorage.user) //读取本地储存的token
+        token1 :JSON.parse(localStorage.user), //读取本地储存的token
+        username : '我叫',
+        user : {}
       }
     },
     computed: mapState({ user: state => state.user }),
-    mounted(){
-      this.$http.post('/api/user/user', {token: this.token1.token}).then(response => {
+    created(){
+      this.$http.get('api/user/user',{params : {token : this.token1.token}}).then( response => {
+          this.user = response.body.user
 
-        console.log(response.body)
       })
     },
     methods: {
@@ -85,7 +87,8 @@
       submit() {
         this.USER_SIGNOUT()
         this.$router.replace({ path: '/login' })
-      }
+      },
+
     },
     components: {
       'nav-gation' : Navigation,
@@ -109,8 +112,8 @@
       .user
         display: flex;
         .avatar
-          flex: 0 0 1.2rem;
-          width: 1.2rem
+          flex: 0 0 1rem;
+          width: 1rem
           a
             display block
             i
@@ -119,10 +122,10 @@
         .user-name
           flex: 1;margin-left: 10px;position: relative
           h1
-            font-size: 0.4rem
+            font-size: 0.36rem
             color: #fff
             margin-bottom: 6px;
-            line-height: 0.4rem
+            line-height: 1rem
           span
             font-size: 12px;color: #fff
       .user-money
@@ -134,6 +137,8 @@
        span
           font-size: 0.8rem;
           color: #fff
+          display inline-block
+          line-height 1.5rem
       .withdrawal
         display: block;
         width: 1.946rem;
@@ -142,7 +147,7 @@
         line-height: 0.68rem;
         font-size: 0.346rem;
         color: #fff;
-        margin: 0.3rem auto 0
+        margin: 0 auto
     .mui-table-view-divider
       padding-top: 0.133rem;
       padding-bottom:  0.133rem;

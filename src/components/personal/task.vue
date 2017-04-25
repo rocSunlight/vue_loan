@@ -2,111 +2,45 @@
   <div class="task balance">
     <div class="mui-content">
       <div style="padding-top: 0.266rem;">
-        <div id="segmentedControl" class="mui-segmented-control mui-segmented-control-inverted mui-segmented-control-primary">
-          <a class="mui-control-item mui-active" href="javascript:void(0);" value="">
+        <div  class="select-nav">
+          <router-link class="select-item " :to="{name: 'Taskall'}">
             全部
-          </a>
-          <a class="mui-control-item  " href="javascript:void(0);" value="0">
+          </router-link>
+          <router-link class="select-item " :to="{name : 'Audit'}">
             审核中
-          </a>
-          <a class="mui-control-item " href="javascript:void(0);" value="3">
+          </router-link>
+          <router-link class="select-item "  :to="{name : 'Rejected'}">
             驳回
-          </a>
-          <a class="mui-control-item " href="javascript:void(0);" value="1">
+          </router-link>
+          <router-link class="select-item "  :to="{name : 'Successful'}">
             审核成功
-          </a>
-          <a class="mui-control-item " href="javascript:void(0);" value="2">
+          </router-link>
+          <router-link class="select-item "  :to="{name : 'Failure'}">
             审核失败
-          </a>
+          </router-link>
         </div>
       </div>
       <div class="h20 bgf5"></div>
-      <div class="jp-control">
-        <div class="mui-scroll-wrapper mui-control-content mui-active" id="refreshContainer">
-          <div class="mui-scroll">
-            <ul class="mui-table-view show">
-              <li class="mui-table-view-cell">
-                <div class="title">
-                  <div class="titles">
-                    <img width="40" height="40" src="/themes/bilei/static/image/index/weblogo3.png" alt="">
-                    <span class="name">春天金融</span>
-                    <span class="mui-badge red">审核中</span>
-                  </div>
-                </div>
-                <ul class="list-data">
-                  <li>
-                    <span class="data-title">任务返利</span>
-                    <span class="datas"><span class="red">120.00</span>元</span>
-                  </li>
-                  <li class="icon-list">
-                    <span class="data-title">报单人</span>
-                    <span class="datas">你好 13800138000</span>
-                    <a href="/user/center/dotask/id/61.html">查看</a>
-                  </li>
-                  <li>
-                    <span class="data-title">报单时间</span>
-                    <span class="datas">2017-03-17 17:20:38</span>
-                  </li>
-                </ul>
-              </li>
-              <li class="mui-table-view-cell">
-                <div class="title">
-                  <div class="titles">
-                    <img width="40" height="40" src="/themes/bilei/static/image/index/weblogo3.png" alt="">
-                    <span class="name">春天金融</span>
-                    <span class="mui-badge yellow">审核中</span>
-                  </div>
-                </div>
-                <ul class="list-data">
-                  <li>
-                    <span class="data-title">任务返利</span>
-                    <span class="datas"><span class="red">120.00</span>元</span>
-                  </li>
-                  <li class="icon-list">
-                    <span class="data-title">报单人</span>
-                    <span class="datas">你好 13800138000</span>
-                    <a href="/user/center/dotask/id/61.html">查看</a>
-                  </li>
-                  <li>
-                    <span class="data-title">报单时间</span>
-                    <span class="datas">2017-03-17 17:20:38</span>
-                  </li>
-                </ul>
-              </li>
-              <li class="mui-table-view-cell">
-                <div class="title">
-                  <div class="titles">
-                    <img width="40" height="40" src="/themes/bilei/static/image/index/weblogo3.png" alt="">
-                    <span class="name">春天金融</span>
-                    <span class="mui-badge green">驳回</span>
-                  </div>
-                </div>
-                <ul class="list-data">
-                  <li>
-                    <span class="data-title">任务返利</span>
-                    <span class="datas"><span class="red">120.00</span>元</span>
-                  </li>
-                  <li class="icon-list">
-                    <span class="data-title">报单人</span>
-                    <span class="datas">你好 13800138000</span>
-                    <a href="/user/center/dotask/id/61.html">查看</a>
-                  </li>
-                  <li>
-                    <span class="data-title">报单时间</span>
-                    <span class="datas">2017-03-17 17:20:38</span>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-            </div>
-        </div>
-      </div>
+      <router-view></router-view>
+
+      <!--底部导航-->
+      <nav-gation :clicked="false" :clicked2="false"></nav-gation>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import Navigation from '../navigation/navigation'
 
+  //  jroll滚动条
+  import '../../../static/js/jroll.min'
+  import '../../../static/js/jroll-vue-infinite'
+
+  export default{
+    components:{
+      'nav-gation' : Navigation
+    }
+  }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
@@ -114,10 +48,11 @@
       .yellow{color: #ffad3e}
       .green{color: #01bf5f}
       .red{color: #fb5a5a}
+      .jp-control{position absolute; top: 1.36rem; bottom: 1.506rem; left: 0; right: 0;}
       .mui-segmented-control.mui-segmented-control-inverted .control-item.mui-active{    color: #fb5a5a;  border-bottom: 2px solid #fb5a5a;}
       .mui-segmented-control .control-item {  line-height: 38px;  display: table-cell;  overflow: hidden;  width: 1%;  -webkit-transition: background-color .1s linear;  transition: background-color .1s linear;  text-align: center;  white-space: nowrap;  text-overflow: ellipsis;  color: #333;  }
       .user  .number i{font-size: 14px;    vertical-align: text-bottom;}
-      .mui-table-view:after,.mui-table-view-cell:after{height: 0}
+      .mui-table-view:after,.mui-table-view-cell:after,.mui-table-view:before{height: 0}
       .mui-table-view-cell{padding: 0.29rem 0 0;border-bottom: 0.24rem solid #f5f5f5;}
 
       .title .titles,.title{position: relative}
