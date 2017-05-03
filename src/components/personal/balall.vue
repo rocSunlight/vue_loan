@@ -16,7 +16,7 @@
 
 <script type="text/ecmascript-6">
   //formatDate时间戳转换
-  import {formatDate} from '../../../static/js/date'
+  import {formatDate} from '../../../static/js/time'
 
   const _this = {} //用于储存vue数据的this
   const _page = 1

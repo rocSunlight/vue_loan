@@ -29,7 +29,7 @@
 
         <ul class="list-item">
           <li class="item" v-for="(item,$index) in someData">
-            <router-link :to="{ name: 'Details', params: { userId: item.id }}" :urlid="item.id">
+            <router-link :to="{ name: 'Details', params: { userId: item.id }}" replace :urlid="item.id">
               <div class="item-left">
                 <img :src="item.c_img" :alt="item.c_name">
                 <span class="item-name" v-text="item.c_name"> </span>

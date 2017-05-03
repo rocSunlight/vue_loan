@@ -5,7 +5,7 @@
       <div class="goods-list">
         <div class="item-new list-item">
           <div class="item-left">
-            <img  :src="user.img" :alt="user.name">
+            <img  :src="WEB_ADD+'/themes/bilei/'+user.img" :alt="user.name">
             <span class="item-name" v-text="user.name"></span>
             <span class="text-right"><i class="jp-ico_residual_task"></i>剩余佣金 <span v-text=""></span> 元</span>
           </div>
@@ -83,7 +83,7 @@
 
 <script type="text/ecmascript-6">
   //formatDate时间戳转换
-  import {formatDate} from '../../../static/js/date'
+  import {formatDate} from '../../../static/js/time'
   import '../../../static/js/jquery-1.4.4.min'
   import '../../../static/js/mui.previewimage'
   import '../../../static/js/mui.zoom'
@@ -93,12 +93,14 @@
     document.location.href=this.href
   })
 
+
   //timer用于储存setInterval传来的id
   var timer =''
   export default {
 
     data() {
       return {
+        WEB_ADD : '',
         info : [],
         user:[],
         declaration : false,
@@ -111,7 +113,9 @@
     },
     //生命周期
     created() {
+
       this.$nextTick(function () {
+
         if(localStorage.user === undefined){
           this.token1 = ''
         }else {
@@ -122,20 +126,16 @@
           this.info = response.body.info   //获取数据
           this.user = response.body.c_name[response.body.info.c_id]  //获取商家信息
           this.endTime = response.body.djs
+          this.WEB_ADD = response.body.WEB_ADD
           if(this.endTime>0){
             this.declaration = true
             this.timeEnd(this.endTime)
           }
-      })
 
-        //调用滚动条
-        mui('.mui-scroll-wrapper').scroll({
-          deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
         })
-
         mui.previewImage()
-
       })
+
     },
     filters: {
       formatDate(time) {
@@ -145,6 +145,7 @@
     },
     //updated数据加载完后可以操作 DOM
     updated(){
+
       $(".uploadContent img").attr('data-preview-group',"1" );
       $(".uploadContent img").attr('data-preview-src',"" );
     },

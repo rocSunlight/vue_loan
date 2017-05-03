@@ -22,7 +22,7 @@
         if (!el) {
 
             div.innerHTML = template.replace(/\{\{id\}\}/g, this.options.id).replace('{{header}}', options.header).replace('{{footer}}', options.footer);
-          document.getElementById("myList").appendChild(div.firstElementChild);
+          document.body.appendChild(div.firstElementChild);
 
             el = document.getElementById(this.options.id);
         }
