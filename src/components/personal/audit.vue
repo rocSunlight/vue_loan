@@ -4,15 +4,15 @@
       <li class="mui-table-view-cell" v-for="item in info">
         <div class="title">
           <div class="titles">
-            <img width="40" height="40" :src="type[item.c_id].img" :alt="type[item.c_id].name">
+            <img width="40" height="40" :src="'http://'+$store.state.urlIp+'/'+item.c_img" :alt="type[item.c_id].name">
             <span class="name" v-text="type[item.c_id].name"></span>
-            <span class="mui-badge red" v-text="status[item.status]" ></span>
+            <span class="mui-badge yellow" v-text="status[item.status]" ></span>
           </div>
         </div>
         <ul class="list-data">
           <li>
             <span class="data-title">任务返利</span>
-            <span class="datas"><span class="red">120.00</span>元</span>
+            <span class="datas"><span class="red">{{item.money}}</span>元</span>
           </li>
           <li class="icon-list">
             <span class="data-title">报单人</span>
@@ -33,14 +33,15 @@
 
 <script type="text/ecmascript-6">
   //formatDate时间戳转换
-  import {formatDate} from '../../../static/js/time'
+  import {formatDate} from '../../style/js/time'
 
-  const _this = {} //用于储存vue数据的this
-  const _page1 = 2
+  var _this = {} //用于储存vue数据的this
+  var _page1 = 2
   export default {
+    name : 'audit',
     data(){
       return {
-        token1: JSON.parse(localStorage.user),
+        token1:this.$store.state.user.token,
         info: [],
         type: [],
         status:[],
@@ -50,7 +51,7 @@
     },
     created(){
       _this = this
-      this.$http.get('api/user/task/status/0', {params: {token: this.token1.token}}).then(response => {
+      this.$http.get('http://'+this.$store.state.urlIp+'/api/user/task/status/0', {params: {token: this.token1}}).then(response => {
         this.info = response.body.list
         this.type = response.body.c_name
         this.total_page = response.body.t_page
@@ -65,13 +66,13 @@
     },
     components: {
       'jroll-infinite': JRoll.VueInfinite({
-        tip: '<div class="loadhide"><img src="../../../static/image/006.gif">正在加载...</img></div> ',
+        tip: '<div class="loadhide"><img src="./static/image/006.gif">正在加载...</img></div> ',
         bottomed: function () {
           var me = this
           var page = _this.total_page  //获取后台传来的数据页数
-          var token = _this.token1.token
+          var token = _this.token1
           if (_page1 < page) {
-            _this.$http.get('api/user/task/status/0', {params: {token: _this.token1.token,p:_page1}}).then(response => {
+            _this.$http.get('http://'+this.$store.state.urlIp+'/api/user/task/status/0', {params: {token: _this.token1,p:_page1}}).then(response => {
               $('.loadhide').addClass('loadshow') //显示加载
               setTimeout(function () {
                 _page1++ // 请求成功将page加1，失败则不要改变page

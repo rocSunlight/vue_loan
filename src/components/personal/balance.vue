@@ -16,8 +16,9 @@
         </div>
       </div>
       <div class="h20 bgf5"></div>
-      <router-view></router-view>
-
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
       <!--底部导航-->
       <nav-gation :clicked="false" :clicked2="false"></nav-gation>
     </div>
@@ -36,6 +37,7 @@
   })
 
   export default{
+    name : 'balance',
     components:{
       'nav-gation' : Navigation
     }

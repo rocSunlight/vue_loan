@@ -16,7 +16,7 @@
 
         <div class="mui-content-padded">
           <button id='login' class="mui-btn mui-btn-block mui-btn-primary">登录</button>
-          <div class="link-area"><a id='reg' href="#/registered">注册账号</a> <span class="spliter">| <a id='reg1' href="#/reset">忘记密码</a> </span>
+          <div class="link-area"><router-link id='reg' to="/registered">注册账号</router-link> <span class="spliter">| <router-link id='reg1' to="/reset">忘记密码</router-link> </span>
           </div>
         </div>
         <div class="mui-content-padded oauth-area">
@@ -37,6 +37,7 @@
 
 
   export default {
+    name : 'login',
     data() {
       return {
         btn: false, //true 已经提交过， false没有提交过
@@ -67,7 +68,7 @@
         }
 
         //向后端发送数据，返回token状态
-        this.$http.post('/api/user/login', {username:this.form.username,password:this.password}).then(response=>{
+        this.$http.post('http://'+this.$store.state.urlIp+'/api/user/login', {username:this.form.username,password:this.password}).then(response=>{
             // 获取后台返回的token状态
           if(response.body.state === 'fail'){ // 判断后台返回state数据类型为fail则返回
             mui.toast('用户名或密码错误')
@@ -97,6 +98,12 @@
 <style lang="stylus" rel="stylesheet/stylus" >
 
   .login
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color:#fff;
     .mui-content
       background-color #f5f5f5
     input:-webkit-autofill
@@ -125,6 +132,8 @@
     .mui-input-row label~textarea
       width: 84%
       padding: 0
+      height: 0.6rem;
+      line-height 0.6rem
     .mui-checkbox input[type=checkbox],
     .mui-radio input[type=radio]
       top: 6px

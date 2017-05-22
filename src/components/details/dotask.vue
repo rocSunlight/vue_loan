@@ -61,18 +61,19 @@
   </div>
 </template>
 
-<script >
-  import '../../../static/js/jquery-1.4.4.min'
-  import '../../../static/js/ajaxfileupload'
-
-
+<script type="text/ecmascript-6">
+  var _this = {}
 
   export default{
+    name : 'dotask',
     data(){
       return {
-        token1 : JSON.parse(localStorage.user),
+        token1 : this.$store.state.user.token,
         images: []
       }
+    },
+    created(){
+        _this = this
     },
     methods: {
       submit(){
@@ -81,10 +82,16 @@
           var do_num = $('#do_num').val()
           var remark = $('#remark').val()
 
-          var userData = {}
 
-         this.$http('api/home/todotask',{token:this.token1.token}).then(response=>{
-             console.log(response)
+         this.$http.post('http://'+this.$store.state.urlIp+'/api/home/todotask',{tid:this.$route.params.userId,token:this.token1,name:username,phone:userphone,do_num:do_num,remark:remark,imgs_data:this.images}).then(response=>{
+              let body  = response.body
+              if(body.status != '1'){
+                mui.toast(body.message)
+              }else{
+                mui.alert('<span class="span-text">正在跳转到任务详情</span>', '<span class="span-successful">报单成功</span>',function() {
+                  document.location.href='#/task/taskall';
+                },'div');
+              }
          })
       },
       jian1 () {
@@ -106,6 +113,8 @@
         if (!files.length)return;
         this.createImage(files);
         this.uploadImage()
+
+
       },
       createImage(file) {
         if(typeof FileReader==='undefined'){
@@ -132,7 +141,7 @@
         obj.images=this.images
         $.ajax({
           type: 'post',
-          url: "api/home/ajaxupimg",
+          url: 'http://'+_this.$store.state.urlIp+"/api/home/ajaxupimg",
           data: obj,
           dataType: "json",
           success: function(data) {
@@ -151,7 +160,7 @@
   }
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" rel="stylesheet/stylus" >
 
   .red
     color #fb5a5a

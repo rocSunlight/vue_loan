@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import store from '../../static/js/store'
+import store from '../style/js/store'
 
 import Home from 'components/home/home'
 import Details from 'components/details/details'
@@ -13,7 +13,7 @@ import Balance2 from 'components/personal/balance2'
 import Cash from 'components/personal/cash'
 import Account from 'components/personal/account'
 import Profile from 'components/personal/profile'
-import Taskall from 'components/personal/Taskall'
+import Taskall from 'components/personal/taskall'
 import Audit from 'components/personal/audit'
 import Rejected  from 'components/personal/rejected'
 import Successful  from 'components/personal/successful'
@@ -30,7 +30,8 @@ Vue.use(Router)
 const title = ''
 
 const router =  new Router({
-  mode: 'hash',// 设置路由模式 可选值: "hash" | "history" | "abstract"，默认"hash"
+  mode: 'hash',// 设置路由模式 可选值: "hash" | "history" | "abstract"，默认"hash",
+  bese:__dirname,
   linkActiveClass: 'active', // 这是链接激活时的class
   routes: [
     {

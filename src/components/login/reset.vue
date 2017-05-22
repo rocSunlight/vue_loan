@@ -1,7 +1,8 @@
 <template>
-  <div class="login reset">
+
+  <div class="login reset" >
     <header class="mui-bar mui-bar-nav">
-      <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" href="/"></a>
+      <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" href=""></a>
       <h1 class="mui-title">找回密码</h1>
     </header>
     <div class="mui-content">
@@ -30,8 +31,7 @@
   </div>
 </template>
 
-<script >
-
+<script type="text/ecmascript-6">
   (function($, doc) {
     $.init();
     $.plusReady(function() {
@@ -77,7 +77,7 @@
       if($this.getAttribute('disabled') == 'disabled') {
         return false;
       }
-      $.ajax('api/code/send_reset', {
+      $.ajax('http://192.168.1.108:8088/api/code/send_reset', {
         type: 'POST',
         dataType: 'json',
         data: {
@@ -105,7 +105,7 @@
 
   mui.ready(function() {
     mui(document).on('submit', '#registerForm', function() {
-      mui.ajax('api/user/reset', {
+      mui.ajax('http://192.168.1.108:8088/api/user/reset', {
         type: 'POST',
         dataType: 'json',
         data: {
@@ -114,13 +114,14 @@
           password: mui('input[name=password]')[0].value
         },
         success: function(data) {
-
+          console.log(data)
+          mui.toast(data.err_msg)
           if(data.state == 'fail') {
 //            console.log(data.info);
           } else {
-            mui.alert('重置密码成功', '', function() {
+            mui.alert('<span class="span-text">重置密码成功</span>', '<span class="span-successful">提示</span>', function() {
               document.location.href='#/login';
-            });
+            },'div');
           }
         },
         error: function(data) {
@@ -138,6 +139,7 @@
   mui-toast-message{
     line-height: 5rem;
   }
+  .animated.bounceOutRight{animation-duration: 1.5s}
 </style>
 
 

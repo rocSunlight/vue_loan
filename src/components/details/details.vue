@@ -1,13 +1,13 @@
-<script src="../../../../../asd.js"></script>
+
 <template>
   <div class="details" id="myList">
     <div class="jp-content ">
       <div class="goods-list">
         <div class="item-new list-item">
           <div class="item-left">
-            <img  :src="WEB_ADD+'/themes/bilei/'+user.img" :alt="user.name">
+            <img  :src="'http://'+$store.state.urlIp+info.c_img" :alt="user.name">
             <span class="item-name" v-text="user.name"></span>
-            <span class="text-right"><i class="jp-ico_residual_task"></i>剩余佣金 <span v-text=""></span> 元</span>
+            <span class="text-right"><i class="jp-ico_residual_task"></i>剩余佣金 <span v-text="">{{info.s_num * info.money}}</span> 元</span>
           </div>
           <div class="item-right">
             <div class="item-div">
@@ -63,7 +63,7 @@
       </div>
 
     </div>
-    <div class="link-url" style="display: none" id="show_url"><span>http://www.79jr.com/</span></div>
+    <div class="link-url" style="display: none" id="show_url" v-show="declaration"><span>{{info.url}}</span></div>
     <div class="details-nav">
         <div class="food-left">
           <div  class="contact" @click="contact()">
@@ -83,7 +83,7 @@
 
 <script type="text/ecmascript-6">
   //formatDate时间戳转换
-  import {formatDate} from '../../../static/js/time'
+  import {formatDate} from '../../style/js/time'
   import '../../../static/js/jquery-1.4.4.min'
   import '../../../static/js/mui.previewimage'
   import '../../../static/js/mui.zoom'
@@ -97,45 +97,33 @@
   //timer用于储存setInterval传来的id
   var timer =''
   export default {
-
+    name : 'details',
     data() {
       return {
-        WEB_ADD : '',
         info : [],
         user:[],
-        declaration : false,
-        divshow  : false,
+        declaration : false, //记录已经报单的状态
         is_do:false,
         endTime:'',
-        token1 :'',
+        token1 :this.$store.state.user.token, //读取本地储存的token
         urlId: this.$route.params.userId //获取从外部跳转的链接id
       }
     },
     //生命周期
-    created() {
+    mounted() {
+        this.$nextTick(function () {
+          this.$http.get('http://'+this.$store.state.urlIp+'/api/Home/infos/id/' + this.urlId,{params:{token:this.token1,id:this.urlId}}).then(response => {
+            this.info = response.body.info   //获取数据
+            this.user = response.body.c_name[response.body.info.c_id]  //获取商家信息
+            this.endTime = response.body.djs
+            if(this.endTime>0){
+              this.declaration = true
+              this.timeEnd(this.endTime)
+            }
 
-      this.$nextTick(function () {
-
-        if(localStorage.user === undefined){
-          this.token1 = ''
-        }else {
-          const  tk = JSON.parse(localStorage.user)
-          this.token1 = tk.token
-        }
-        this.$http.get('api/Home/infos/id/' + this.urlId,{params:{token:this.token1,id:this.urlId}}).then(response => {
-          this.info = response.body.info   //获取数据
-          this.user = response.body.c_name[response.body.info.c_id]  //获取商家信息
-          this.endTime = response.body.djs
-          this.WEB_ADD = response.body.WEB_ADD
-          if(this.endTime>0){
-            this.declaration = true
-            this.timeEnd(this.endTime)
-          }
-
+          })
+          mui.previewImage()
         })
-        mui.previewImage()
-      })
-
     },
     filters: {
       formatDate(time) {
@@ -154,7 +142,7 @@
     methods:{
       contact () {
         //弹出QQ框
-        mui.alert('<span class="suc">如有疑问，请咨询闪财网客服</span><br/> <small class="c999">(长按复制QQ或微信公众号)</small> <br> <span class="red"><span >QQ:</span>'+this.info.qq+'</span>', '<i class="jp-ico_customer_service"></i>', '我知道了');
+        mui.alert('<span class="suc">如有疑问，请咨询闪财网客服</span><br/> <small class="c999">(长按复制QQ或微信公众号)</small> <br> <span class="red"><span >QQ:</span>'+this.info.qq+'</span>', "<i class='jp-ico_customer_service'></i>", '我知道了',function(){},'div');
 
       },
       // 点击参与报单
@@ -168,19 +156,17 @@
           const _this =this
           mui.confirm('<span class="suc">请在300分钟之内完成任务并报单</span><br/> <small class="c999">(长按复制链接)</small> <br>  <input type="text" value="'+_this.info.url+'" style="width: auto; height: 0.8rem; padding: .2em; margin: 0.32rem 0; "/></span> ','<span style="font-size: 0.6rem">提示</span>',new Array('取消','确定'),function (e) {
             var  is_do = false
-
             if (e.index == 1 && is_do==false) {
               is_do = true;
-              _this.$http.post('/api/home/willtask',{token: _this.token1.token,id:_this.info.id}).then(response=>{
+              _this.$http.post('http://'+_this.$store.state.urlIp+'/api/home/willtask',{token: _this.token1.token,id:_this.info.id}).then(response=>{
                 _this.declaration = true
-                $("#show_url").show();
                 $("#djs").val(response.body.djs);
                 _this.timeEnd(300*60)
               })
             }else {
               _this.declaration = false
             }
-          })
+          },'div')
 
             if(_this.endTime>0){
               _this.timeEnd(_this.endTime);
@@ -188,9 +174,9 @@
             }
 
         }else{
-          mui.alert('请登录之后再来报单', '',function() {
+          mui.alert('<span class="span-text">请登录之后再来报单</span>', '<span class="span-successful">提示</span>',function() {
             document.location.href='#/login';
-          });
+          },'div');
         }
       },
       //报单剩余时间
@@ -219,6 +205,9 @@
     },
     beforeDestroy(){
       clearInterval(timer)
+      // 退出路由后操作图片预览
+      $('#__MUI_PREVIEWIMAGE').removeClass('mui-preview-in')
+      $('#__MUI_PREVIEWIMAGE').addClass('mui-preview-out')
     }
   }
 </script>

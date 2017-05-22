@@ -5,12 +5,12 @@
             <div class="user">
               <div class="avatar"><a href="#"><i class="jp-btn_head_portrait"></i></a></div>
               <div class="user-name">
-                <h1>{{user.mobile}}</h1>
+                <h1>{{userinfo.mobile}}</h1>
               </div>
             </div>
             <div class="user-money">
               <h1>我的余额<small>（元）</small></h1>
-              <span>{{user.money}}</span>
+              <span>{{userinfo.money}}</span>
               <router-link  class="mui-btm withdrawal" to="/withdrawal">提现</router-link>
             </div>
           </div>
@@ -68,17 +68,18 @@
   import { USER_SIGNOUT } from '../../style/js/user'
 
   export default {
+    name : 'personal',
     data() {
       return {
-        token1 :JSON.parse(localStorage.user), //读取本地储存的token
-        username : '我叫',
-        user : {}
+        token1 :this.$store.state.user.token, //读取本地储存的token
+        username : '',
+        userinfo : ''
       }
     },
     computed: mapState({ user: state => state.user }),
     created(){
-      this.$http.get('api/user/user',{params : {token : this.token1.token}}).then( response => {
-          this.user = response.body.user
+      this.$http.get('http://'+this.$store.state.urlIp+'/api/user/user',{params : {token : this.token1}}).then( response => {
+          this.userinfo = response.body.user
 
       })
     },
@@ -103,7 +104,7 @@
       height: 100%;
       background-color: #f5f5f5
     .user-top
-      background-image: url(/static/image/bg_acconut.png);
+      background-image: url(bg_acconut.png)
       height: 4.533rem;
       box-sizing: border-box;
       padding: 0.4rem 0.4rem 0.346rem ;

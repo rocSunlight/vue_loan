@@ -20,6 +20,7 @@
 
 <script type="text/ecmascript-6">
   export default {
+    name : 'navigation',
     data () {
       return {
         bottomNav: 'movies',

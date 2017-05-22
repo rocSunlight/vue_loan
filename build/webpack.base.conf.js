@@ -24,7 +24,7 @@ module.exports = {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
       'components': resolve('src/components'),
-      'common': resolve('src/common')
+      'style': resolve('src/style')
     }
   },
   module: {
@@ -44,7 +44,7 @@ module.exports = {
         loader: 'url-loader',
         query: {
           limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+          name: ('./[name].[hash:7].[ext]')
         }
       },
       {

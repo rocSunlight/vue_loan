@@ -17,14 +17,15 @@
 
 <script type="text/ecmascript-6">
   //formatDate时间戳转换
-  import {formatDate} from '../../../static/js/time'
+  import {formatDate} from '../../style/js/time'
 
-  const _this = {} //用于储存vue数据的this
+  var _this = {} //用于储存vue数据的this
   var _page1 = 1
   export default {
+    name : 'cash',
     data(){
       return {
-        token1: JSON.parse(localStorage.user),
+        token1:this.$store.state.user.token,
         info: [],
         type: [],
         total_page : '',
@@ -34,7 +35,7 @@
     },
     created(){
       _this = this
-      this.$http.get('api/home/balance/type/1', {params: {token: this.token1.token}}).then(response => {
+      this.$http.get('http://'+this.$store.state.urlIp+'/api/home/balance/type/1', {params: {token: this.token1}}).then(response => {
         this.info = response.body.info
         this.type = response.body.money_type
         this.operation = response.body.money_types
@@ -49,20 +50,19 @@
     },
     components: {
       'jroll-infinite': JRoll.VueInfinite({
-        tip: '<div class="loadhide"><img src="../../../static/image/006.gif">正在加载...</img></div> ',
+        tip: '<div class="loadhide"><img src="./static/image/006.gif">正在加载...</img></div> ',
         bottomed: function () {
           var me = this
           var page = _this.total_page  //获取后台传来的数据页数
-          var token = _this.token1.token
+          var token = _this.token1
           if (_page1 < page) {
             mui.ajax({
-              url: "http://192.168.1.168:8089/api/home/balance/type/1?token="+token+"&p="+(_page1+1),
+              url: 'http://'+this.$store.state.urlIp+"/api/home/balance/type/1?token="+token+"&p="+(_page1+1),
               type:"get",
               success: function (data) {
                 $('.loadhide').addClass('loadshow') //显示加载
                 setTimeout(function () {
                   _page1++ // 请求成功将page加1，失败则不要改变page
-                  console.log(data)
                   var jons = JSON.parse(data)
                   _this.info = _this.info.concat(jons.info)
                   if (_page1 === page) {

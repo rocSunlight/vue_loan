@@ -6,7 +6,7 @@ export const USER_SIGNGET = 'USER_SIGNGET' //读取数据
 
 //vuex的核心store仓库，state状态，mutations更改，actions动作
 export default {
-  state: JSON.parse(localStorage.getItem('user')) || {},
+  state: JSON.parse(localStorage.getItem('user')) || '',
   mutations: {
     [USER_SIGNIN](state, user) {
       localStorage.setItem('user', JSON.stringify(user))

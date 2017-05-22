@@ -100,7 +100,7 @@ body {
 .bgf5{background-color: #f5f5f5}
 
 /*公用样式*/
-.jp-content{  margin-bottom: 1.506rem;  }
+.jp-content{  padding-bottom: 1.506rem;  }
 .jp-content .jroll-scroll{  position: absolute;  top: 0;  bottom: 1.506rem;  width: 100%;  }
 
 /*标题*/
@@ -250,3 +250,25 @@ body {
 .jroll-infinite-tip{    font-size: 0.5rem;  text-align: center;  line-height: 1rem;  color: #666;}
 .jroll-infinite-tip img{      width: 0.48rem;  vertical-align: middle;  margin-right: 0.13rem;}
 
+/*弹出框*/
+.span-successful{
+  font-size: 0.6rem;
+  line-height: 0.9rem;
+}
+.span-text{  line-height: 1rem  }
+
+/*加载中*/
+.loadings{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+
+  text-align: center;
+  background-image: url(static/image/loading.gif);
+  background-repeat: no-repeat;
+  background-size: 12%;
+  background-position: center;
+}

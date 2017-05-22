@@ -21,7 +21,9 @@
         </div>
       </div>
       <div class="h20 bgf5"></div>
-      <router-view></router-view>
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
 
       <!--底部导航-->
       <nav-gation :clicked="false" :clicked2="false"></nav-gation>
@@ -37,6 +39,7 @@
   import '../../../static/js/jroll-vue-infinite'
 
   export default{
+    name : 'task',
     components:{
       'nav-gation' : Navigation
     }

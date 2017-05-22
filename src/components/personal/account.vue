@@ -24,10 +24,10 @@
 
 <script type="text/ecmascript-6">
   export default{
-
+    name : 'account',
     data() {
       return {
-        token1 : JSON.parse(localStorage.user),
+        token1 : this.$store.state.user.token,
         account : {}
       }
     },
@@ -45,7 +45,7 @@
       }
     },
     mounted(){
-        this.$http.get('api/user/account',{params: {token: this.token1.token}}).then(response => {
+        this.$http.get('http://'+this.$store.state.urlIp+'/api/user/account',{params: {token: this.token1}}).then(response => {
             this.account = response.body.account
         })
     },
@@ -60,7 +60,7 @@
       height: 100%;
       background-color: #f5f5f5;
       .inform-wrapper .avatar
-        background-image: url(/static/image/bg_acconut.png);
+        background-image: url(bg_acconut.png);
         height: 4.533rem;
         box-sizing: border-box;
         padding: 0.4rem 0.4rem 0.346rem ;

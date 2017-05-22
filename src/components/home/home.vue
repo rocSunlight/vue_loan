@@ -10,12 +10,12 @@
           <div class="swiper-wrapper">
             <div class="swiper-slide">
               <router-link to="/">
-                <img width="100%" src="/static/image/banner.png" alt="广告图">
+                <img width="100%" src="static/image/banner.png" alt="广告图">
               </router-link>
             </div>
             <div class="swiper-slide">
               <router-link to="/">
-                <img  width="100%" src="/static/image/banner.png" alt="广告图">
+                <img  width="100%" src="static/image/banner.png" alt="广告图">
               </router-link>
             </div>
           </div>
@@ -31,9 +31,9 @@
           <li class="item" v-for="(item,$index) in someData">
             <router-link :to="{ name: 'Details', params: { userId: item.id }}" replace :urlid="item.id">
               <div class="item-left">
-                <img :src="item.c_img" :alt="item.c_name">
+                <img :src="'http://'+$store.state.urlIp+item.c_img" :alt="item.c_name">
                 <span class="item-name" v-text="item.c_name"> </span>
-                <span class="text-right"><i class="jp-ico_residual_task"></i>剩余佣金 <span>840</span> 元</span>
+                <span class="text-right"><i class="jp-ico_residual_task"></i>剩余佣金 <span>{{item.money*item.last_num}}</span> 元</span>
               </div>
               <div class="item-right">
 
@@ -77,6 +77,7 @@
   var dataPage = 1//上拉加载数据的开始位置
   export default {
     //mounted 生命周期钩子
+    name : 'home',
     data() {
       return {
         someData:[],
@@ -87,8 +88,15 @@
         t_page : ''
       }
     },
-    created() {
+
+    mounted(){
       _this = this
+      this.$http.get('http://'+this.$store.state.urlIp+'/api/home/indexs' ).then(response=> {
+        this.nexturl = response.nexturl
+        this.t_page = response.body.t_page
+        const rel = response.body
+        this.someData = rel.info
+      })
 
       //实例化轮埠图
       var mySwiper = new Swiper ('.swiper-container', {
@@ -98,25 +106,18 @@
         pagination: '.swiper-pagination',
       })
 
-      this.$http.get('/api/home/indexs' ).then(response=> {
-        this.nexturl = response.nexturl
-        this.t_page = response.body.t_page
-        const rel = response.body
-        this.someData = rel.info
-      })
-
     },
 
     components: {
       'nav-gation': Navigation,
       'jroll-infinite': JRoll.VueInfinite({
-        tip: '<img src="../../../static/image/006.gif">正在加载...</img>',
+        tip: '<img src="./static/image/006.gif">正在加载...</img>',
         bottomed: function () {
           var me = this
           var page = _this.t_page  //获取后台传来的数据页数
           if (dataPage < page) {
             mui.ajax({
-              url: 'http://192.168.1.168:8089/Api/Home/indexs/p/' + (dataPage + 1) +'.html',
+              url: 'http://'+_this.$store.state.urlIp+'/Api/Home/indexs/p/' + (dataPage + 1) +'.html',
               success: function (data) {
                setTimeout(function () {
                  dataPage++ // 请求成功将page加1，失败则不要改变page

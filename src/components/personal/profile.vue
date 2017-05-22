@@ -41,9 +41,10 @@
 
 <script type="text/ecmascript-6">
   export default{
+    name : 'profile',
     data() {
       return {
-        token1: JSON.parse(localStorage.user),
+        token1:this.$store.state.user.token,
         real_name : '',           //姓名
         card_id :'',            //身份证
         ali_account :'',        //支付宝账号
@@ -55,7 +56,7 @@
     },
     mounted(){
 
-      this.$http.get('/api/user/profile', {params: {token: this.token1.token}}).then(response =>{
+      this.$http.get('http://'+this.$store.state.urlIp+'/api/user/profile', {params: {token: this.token1}}).then(response =>{
         var user = response.body.user
         this.real_name = user.real_name
         this.card_id = user.card_id

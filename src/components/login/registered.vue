@@ -1,11 +1,12 @@
 <template>
+
     <div class="login reset">
     <header class="mui-bar mui-bar-nav">
-      <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" href="/"></a>
+      <router-link class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" to=""></router-link>
       <h1 class="mui-title">注册</h1>
     </header>
     <div class="mui-content">
-      <form class="mui-input-group" action="http://192.168.1.168:8089/api/user/register" method="POST" id="registerForm1" >
+      <form class="mui-input-group" action="http://192.168.1.108:8088/api/user/register" method="POST" id="registerForm1" >
         <div class="mui-input-row">
           <label><i class="jp-ico_telepohone"></i></label>
           <input style="width: 54%;margin-right:30%;" name="mobile" id='account' type="text" class="mui-input-clear mui-input" placeholder="请输入手机号" >
@@ -27,10 +28,11 @@
         </div>
       </form>
     </div>
+
   </div>
 </template>
 
-<script >
+<script type="text/ecmascript-6">
 
   (function($, doc) {
     $.init();
@@ -77,7 +79,7 @@
       if($this.getAttribute('disabled') == 'disabled') {
         return false;
       }
-      $.ajax('api/code/send_register', {
+      $.ajax('http://192.168.1.108:8088/api/code/send_register', {
         type: 'POST',
         dataType: 'json',
         data: {
@@ -105,7 +107,7 @@
 
   mui.ready(function() {
     mui(document).on('submit', '#registerForm1', function() {
-      mui.ajax('api/user/register', {
+      mui.ajax('http://192.168.1.108:8088/api/user/register', {
         type: 'POST',
         dataType: 'json',
         data: {
@@ -118,7 +120,7 @@
           if(data.state == 'fail') {
 //            console.log(data.info);
           } else {
-            mui.alert('注册成功', '', function() {
+            mui.alert('<span class="span-text">注册成功</span>', '<span class="span-successful">提示</span>', function() {
               document.location.href='#/login';
             });
           }

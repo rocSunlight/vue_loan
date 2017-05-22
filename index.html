@@ -4,7 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta content=”black” name=”apple-mobile-web-app-status-bar-style” />
   <title>Document</title>
+  <script>
+
+      // 设置手机端自适应大小
+      var scale = 1 / devicePixelRatio;
+      if(document.documentElement.clientWidth<375){
+        scale = 0.333
+      }
+//      alert(document.documentElement.clientWidth+'-'+scale)
+      document.querySelector('meta[name="viewport"]').setAttribute('content','initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');
+      document.documentElement.style.fontSize = document.documentElement.clientWidth / 10 + 'px';
+
+
+  </script>
   <link rel ="Shortcut Icon" href="static/favicon.ico">
 
   <!--muse-ui的字体文件-->
@@ -16,14 +30,12 @@
 
 </head>
 <body>
-  <div id="app" >
-    <router-view></router-view>
+  <div id="app" style="height: 100%">
+    <keep-alive include="home">
+       <router-view></router-view>
+    </keep-alive>
   </div>
+  <!--<div class="loadings"><img src="static/image/loading.gif" alt="加载中..."></div>-->
 </body>
-<script>
-  // 设置手机端自适应大小
-  var scale = 1 / devicePixelRatio;
-  document.querySelector('meta[name="viewport"]').setAttribute('content','initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');
-  document.documentElement.style.fontSize = document.documentElement.clientWidth / 10 + 'px';
-</script>
+
 </html>
