@@ -43,7 +43,7 @@
 
           <li class="mui-table-view-cell">
             <span style="float: left; width: 25%;">任务链接</span>
-            <span class="mui-badge blue">{{info.url}}</span>
+            <span class="mui-badge blue" id="asdasd" @click="showUrl()">{{info.url}}</span>
           </li>
         </ul>
       </div>
@@ -63,7 +63,7 @@
       </div>
 
     </div>
-    <div class="link-url" style="display: none" id="show_url" v-show="declaration"><span>{{info.url}}</span></div>
+    <div class="link-url" style="display: none" id="show_url" v-show="declaration" @click="showUrl()"><span>{{info.url}}</span></div>
     <div class="details-nav">
         <div class="food-left">
           <div  class="contact" @click="contact()">
@@ -82,6 +82,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+
   //formatDate时间戳转换
   import {formatDate} from '../../style/js/time'
   import '../../../static/js/jquery-1.4.4.min'
@@ -93,6 +94,15 @@
     document.location.href=this.href
   })
 
+  window.onload = function () {
+
+  }
+
+
+  document.addEventListener('plusready',function(){
+
+
+  })
 
   //timer用于储存setInterval传来的id
   var timer =''
@@ -133,32 +143,35 @@
     },
     //updated数据加载完后可以操作 DOM
     updated(){
-
       $(".uploadContent img").attr('data-preview-group',"1" );
       $(".uploadContent img").attr('data-preview-src',"" );
     },
 
     //实例方法
     methods:{
+      // 浏览器打开
+      showUrl(){
+          // 调用原生html5+的plus事件 在浏览器打开
+        var urliP = this.info.url
+        plus.runtime.openURL( urliP);
+      },
       contact () {
         //弹出QQ框
-        mui.alert('<span class="suc">如有疑问，请咨询闪财网客服</span><br/> <small class="c999">(长按复制QQ或微信公众号)</small> <br> <span class="red"><span >QQ:</span>'+this.info.qq+'</span>', "<i class='jp-ico_customer_service'></i>", '我知道了',function(){},'div');
+        mui.alert('<span class="suc">如有疑问，请咨询闪财网客服</span><br/> <small class="c999">(长按复制QQ或微信公众号)</small> <br> <span class="red lh40"><span >QQ:</span>'+this.info.qq+'</span>', "<i class='jp-ico_customer_service'></i>", '我知道了',function(){},'div');
 
       },
       // 点击参与报单
       participate() {
         //判断是否登录,在缓存中提取
 
-        var tok = localStorage.user
+        var tok = this.$store.state.user.token
         if(tok != undefined){
-            this.token1 = JSON.parse(tok)
-          const userId = this.info.id
           const _this =this
-          mui.confirm('<span class="suc">请在300分钟之内完成任务并报单</span><br/> <small class="c999">(长按复制链接)</small> <br>  <input type="text" value="'+_this.info.url+'" style="width: auto; height: 0.8rem; padding: .2em; margin: 0.32rem 0; "/></span> ','<span style="font-size: 0.6rem">提示</span>',new Array('取消','确定'),function (e) {
+          mui.confirm('<span class="suc">请在300分钟之内完成任务并报单</span><br/> <small class="c999">(长按复制链接)</small> <br>  <input type="text" value="'+_this.info.url+'" style="width: auto; height: 0.8rem;line-height: 0.8rem; padding: .2em; margin: 0.2rem 0; "/></span> ','<span style="font-size: 0.6rem">提示</span>',new Array('取消','确定'),function (e) {
             var  is_do = false
             if (e.index == 1 && is_do==false) {
               is_do = true;
-              _this.$http.post('http://'+_this.$store.state.urlIp+'/api/home/willtask',{token: _this.token1.token,id:_this.info.id}).then(response=>{
+              _this.$http.post('http://'+_this.$store.state.urlIp+'/api/home/willtask',{token: _this.token1,id:_this.info.id}).then(response=>{
                 _this.declaration = true
                 $("#djs").val(response.body.djs);
                 _this.timeEnd(300*60)
@@ -302,6 +315,7 @@
       color #fb5a5a
     .c999
         font-size: 0.29rem
+        line-height 0.8rem
         color: #999
 
 </style>

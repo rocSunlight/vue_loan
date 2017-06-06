@@ -7,25 +7,25 @@
           <div class="mui-input-row">
             <input type="hidden" name="" value="">
             <label >做单人姓名 <small class="red">*</small></label>
-            <input id="username" class="inputText"  type="text" placeholder="请输入做单人姓名" v-model="info.name">
+            <input id="username" class="inputText"  type="text" placeholder="请输入做单人姓名" v-model="info.name" :readonly=" show === false ">
             <img id="my_img_id" class="my_img_class" />
           </div>
           <div class="mui-input-row">
             <label >做单人电话 <small class="red">*</small></label>
-            <input id="userphone" class="inputText" type="text"  placeholder="请输入做单人电话" v-model="info.phone">
+            <input id="userphone" class="inputText" type="text"  placeholder="请输入做单人电话" v-model="info.phone" :readonly=" show === false ">
           </div>
           <div class="mui-input-row">
             <label>做单数*</label>
-            <i class="jp-btn_reduce_picture jian" @click="jian1"></i>
-            <input class="inputText2" type="text" id="do_num" value="1"  name="do_num" v-model="info.do_num">
-            <i class="jp-btn_add2_picture jia" @click="jia1();"></i>
+            <i class="jp-btn_reduce_picture jian" @click="jian1" v-if="show"></i>
+            <input class="inputText2" type="text" id="do_num" value="1"  name="do_num" v-model="info.do_num" :readonly=" show === false ">
+            <i class="jp-btn_add2_picture jia" @click="jia1();" v-if="show"></i>
           </div>
           <div class="mui-input-row hInherit" >
 
             <label >任务截图 </label>
             <div class="image-item space">
-              <div class="jp-btn_add_picture"></div>
-              <input type="file" id="fileid" name="imgfile0" tip="图片文件" accept="image/*" @change="onFileChange">
+              <div class="jp-btn_add_picture" v-if="show"></div>
+              <input type="file" id="fileid" name="imgfile0" tip="图片文件" accept="image/*" @change="onFileChange" v-if="show">
 
               <div class="imgs" id="imgs">
                 <ul>
@@ -41,7 +41,7 @@
           </div>
           <div class="mui-input-row hInherit">
             <label >添加备注 </label>
-            <textarea  name="remark" id="remark" cols="30" rows="10" placeholder="可不填" v-model="info.remark"></textarea>
+            <textarea  name="remark" id="remark" cols="30" rows="10" placeholder="可不填" v-model="info.remark" :readonly=" show === false "></textarea>
           </div>
         </div>
         <div class="h20 bgf5"></div>
@@ -95,7 +95,6 @@
         let body = response.body
         this.info = body.info
         this.images = this.info.img_arr
-        console.log(this.images)
         let status =  this.info.status
         if(status === '0'){
 
@@ -263,7 +262,7 @@
           padding 0 0.13rem
           li
             float left
-            margin: 0 0.12rem;
+            margin: 0.2rem 0.12rem 0;
     .mit
       background-color: #fff;
       height: 1.306rem;

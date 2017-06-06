@@ -10,7 +10,7 @@
         <div class="mui-input-row">
           <label><i class="jp-ico_telepohone"></i></label>
           <input style="width: 54%;margin-right:30%;" name="mobile" id='account' type="text" class="mui-input-clear mui-input" placeholder="请输入手机号" >
-          <span class="sms" id="sms2" >获取手机验证码</span>
+          <span class="sms" id="sms2" >获取短信验证码</span>
         </div>
         <div class="mui-input-row">
           <label><i class="jp-ico_verification_code"></i></label>
@@ -75,11 +75,28 @@
     });
 
     $(document).on('click', '#sms2', function() {
-      $this = $(this)[0];
+      var $this = $(this)[0];
       if($this.getAttribute('disabled') == 'disabled') {
         return false;
       }
-      $.ajax('http://192.168.1.108:8088/api/code/send_register', {
+      //短信验证码倒计时
+      var wait = 30
+      function time(obj) {
+        if(wait == 0 ){
+          obj.removeAttribute('disabled')
+          obj.innerHTML = '获取短信验证码'
+          wait = 60
+        }else {
+          obj.setAttribute("disabled", 'disabled');
+          obj.innerHTML="重新发送(" + wait +'s'+")";
+          wait--;
+          setTimeout(function() {
+              time(obj)
+            },
+            1000)
+        }
+      }
+      $.ajax('http://192.168.1.158:8088/api/code/send_register', {
         type: 'POST',
         dataType: 'json',
         data: {
@@ -87,8 +104,7 @@
         },
         success: function(data) {
           if(data.state == 'success') {
-            $this.innerHTML = '发送成功';
-            $this.setAttribute('disabled', 'disabled');
+            time($this)
             $.toast('短信验证码发送成功');
           } else {
             if(data.msg) {
@@ -107,7 +123,7 @@
 
   mui.ready(function() {
     mui(document).on('submit', '#registerForm1', function() {
-      mui.ajax('http://192.168.1.108:8088/api/user/register', {
+      mui.ajax('http://192.168.1.109:8088/api/user/register', {
         type: 'POST',
         dataType: 'json',
         data: {

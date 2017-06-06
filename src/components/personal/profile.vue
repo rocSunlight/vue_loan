@@ -119,6 +119,7 @@
           display: inline-block;
           flex: 0 0 2.5rem;
           width: 2.5rem
+          line-height: 0.6rem;
           strong
               color #fb5a5a
               margin-left 0.13rem
@@ -127,6 +128,8 @@
           margin: -3px 5px 0px 15px;
           padding: 0;
           text-align: right;
+          line-height: 0.6rem;
+          height:0.6rem;
           border: 0;
       .btn-div
         padding: 0.26rem 0 0.4rem;text-align: center

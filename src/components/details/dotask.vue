@@ -1,14 +1,13 @@
 <template>
-  <div class="mui-content release-wrapper bgColor">
+  <div class="mui-content release-wrapper bgColor" id="cont" >
     <div class="deta-title "><i class="jp-ico_fill_information"></i><span>请填写报单必须项</span> </div>
-    <div class="content">
+    <div class="content" >
       <form method="post" class="mui-input-group" enctype="api/home/todotask" @submit.prevent="submit">
         <div class="bgfff">
           <div class="mui-input-row">
             <input type="hidden" name="" value="">
             <label >做单人姓名 <small class="red">*</small></label>
             <input id="username" class="inputText"  type="text" placeholder="请输入做单人姓名">
-            <img id="my_img_id" class="my_img_class" />
           </div>
           <div class="mui-input-row">
             <label >做单人电话 <small class="red">*</small></label>
@@ -41,7 +40,7 @@
           </div>
           <div class="mui-input-row hInherit">
             <label >添加备注 </label>
-            <textarea  name="remark" id="remark" cols="30" rows="10" placeholder="可不填"></textarea>
+            <textarea  name="remark" id="remark" cols="30" rows="10" placeholder="可不填" ></textarea>
           </div>
         </div>
         <div class="prompt-text">
@@ -51,7 +50,7 @@
             恶意提交无关报单项，将扣款1~5元
           </p>
         </div>
-        <div class="mit">
+        <div class="mit" id="mit">
           <div  class="mui-btn cancel-btn" onclick="window.history.go(-1)"  >取消参与</div>
           <button  class="mui-btn submit-btn"  >提交</button>
         </div>
@@ -63,6 +62,7 @@
 
 <script type="text/ecmascript-6">
   var _this = {}
+
 
   export default{
     name : 'dotask',
@@ -76,6 +76,7 @@
         _this = this
     },
     methods: {
+
       submit(){
           var username = $('#username').val()
           var userphone = $('#userphone').val()
@@ -171,6 +172,8 @@
     left 0
     right 0
     background-color #f5f5f5
+    #cont
+      position static
     .deta-title
       background-color: #f5f5f5;
       color: #666;
@@ -231,7 +234,7 @@
       display: flex;
       .cancel-btn
         background-color: #ffad3e;
-        line-height 1.2rem
+        line-height 1rem
       .submit-btn
         background-color: #fb5a5a;
       .cancel-btn,.submit-btn {

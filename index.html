@@ -2,36 +2,45 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta content=”black” name=”apple-mobile-web-app-status-bar-style” />
-  <title>Document</title>
-  <script>
+  <title>闪财宝</title>
 
-      // 设置手机端自适应大小
-      var scale = 1 / devicePixelRatio;
-      if(document.documentElement.clientWidth<375){
-        scale = 0.333
-      }
-//      alert(document.documentElement.clientWidth+'-'+scale)
-      document.querySelector('meta[name="viewport"]').setAttribute('content','initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');
-      document.documentElement.style.fontSize = document.documentElement.clientWidth / 10 + 'px';
-
-
-  </script>
   <link rel ="Shortcut Icon" href="static/favicon.ico">
 
   <!--muse-ui的字体文件-->
   <link rel="stylesheet" href="static/css/jp-icon.css">
   <link rel="stylesheet" href="static/css/mui.min.css">
   <!--引入初始化文件-->
+
   <link rel="stylesheet" href="static/css/reset.css">
   <script src="static/js/mui.min.js"></script>
+  <!--update更新版本-->
+  <script src="static/js/update.js"></script>
+
+  <script>
+    // htlm5+事件
+    document.addEventListener('plusready',function(){
+      plus.navigator.setStatusBarBackground('#000')
+    })
+    // 设置手机端自适应大小
+    var scale = 1 / devicePixelRatio;
+    //    alert(scale)
+    if(document.documentElement.clientWidth<375){
+      scale = 0.333
+    }
+
+    document.querySelector('meta[name="viewport"]').setAttribute('content','width=device-width,initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');
+    document.documentElement.style.fontSize = document.documentElement.clientWidth / 10 + 'px';
+
+    checkUpdate()
+  </script>
+
 
 </head>
 <body>
   <div id="app" style="height: 100%">
-    <keep-alive include="home">
+    <keep-alive include="home" >
        <router-view></router-view>
     </keep-alive>
   </div>

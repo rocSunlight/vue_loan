@@ -145,6 +145,7 @@
           text-align: right;
           font-size: 0.8rem;
           height 1.2rem
+          line-height 1.2rem
           border: 0;
           padding: 0 0.133rem 0 0;
     .remind

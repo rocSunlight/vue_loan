@@ -11,7 +11,7 @@
         </div>
         <div class="mui-input-row">
           <label><i class="jp-ico_password"></i></label>
-          <input name="password" id='password' type="password" class="mui-input-clear mui-input" placeholder="请填写密码" v-model="password">
+          <input name="password" id='password' onfocus="this.type='password'" autocomplete="off" type="text" class="mui-input-clear mui-input" placeholder="请填写密码" v-model="password">
         </div>
 
         <div class="mui-content-padded">

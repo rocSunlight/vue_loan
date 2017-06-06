@@ -2,7 +2,7 @@
   <div class="navigation">
     <div class="jp-nav border-1px border-top">
       <div class="nav-item">
-        <router-link to="/home" :class="{active : clicked}">
+        <router-link to="/home" :class="{active : clicked}" replace>
           <i :class="clicked? 'jp-btn_homehl':'jp-btn_home'" ></i>
           <span class="text">首页</span>
         </router-link>

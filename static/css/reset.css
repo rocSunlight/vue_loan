@@ -95,6 +95,9 @@ body {
 }
 /*高度*/
 .h20{height:0.27rem }
+
+/*行高*/
+.lh40{height:0.5rem ;    display:block;}
 /*字体颜色*/
 .redBg {  background: #fb5a5a !important;  }
 .bgf5{background-color: #f5f5f5}
@@ -234,7 +237,7 @@ body {
 .mui-popup-button.mui-popup-button-bold{font-size: 0.4rem;font-weight: 500}
 .mui-input-group .mui-input-row{height: 1.33rem;line-height: 1.33rem;font-size:0.4rem }
 .mui-input-row label{line-height: inherit;padding: 0 0 0 0.4rem;    color: #333;}
-.mui-input-row label~input{    padding: 0;  margin: 0.38rem 0;}
+.mui-input-row label~input{    padding: 0;  margin: 0.38rem 0;height: 0.6rem;line-height: 0.6rem}
 .mui-bar{height: 1rem;background-color: #fff }
 .mui-bar .mui-title{line-height: 1rem;font-size: 0.4rem;color: #007aff }
 .mui-bar-nav~.mui-content{padding-top: 1.2rem;}
@@ -243,7 +246,7 @@ body {
 .mui-toast-message{  font-size:0.32rem;  padding: 0.3rem;  height: auto;line-height: 0.4rem;text-align: left  }
 .mui-content{background-color: #fff}
 .select-nav{height: 0.8rem;display: flex;display: -webkit-flex;}
-.select-nav .select-item {flex: 1;-webkit-flex:1;font-size:0.37rem ;text-align: center}
+.select-nav .select-item {flex: 1;-webkit-flex:1;font-size:0.37rem ;text-align: center;    box-sizing: border-box;  height: 0.8rem;  line-height: 0.5rem;}
 .select-nav .active{    color: #fb5a5a;  border-bottom: 4px solid #fb5a5a;line-height: 0.5rem }
 .mui-table-view-cell:after{    left: 0px}
 
@@ -256,19 +259,4 @@ body {
   line-height: 0.9rem;
 }
 .span-text{  line-height: 1rem  }
-
-/*加载中*/
-.loadings{
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 999;
-
-  text-align: center;
-  background-image: url(static/image/loading.gif);
-  background-repeat: no-repeat;
-  background-size: 12%;
-  background-position: center;
-}
+.jroll-plugin-pulldown-text{font-size: 0.32rem}

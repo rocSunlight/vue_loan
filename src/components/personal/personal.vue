@@ -80,7 +80,6 @@
     created(){
       this.$http.get('http://'+this.$store.state.urlIp+'/api/user/user',{params : {token : this.token1}}).then( response => {
           this.userinfo = response.body.user
-
       })
     },
     methods: {
@@ -132,7 +131,7 @@
       .user-money
         text-align: center
        h1
-        font-size: 0.48rem;color: #fff ;line-height: 30px
+        font-size: 0.48rem;color: #fff ;
        small
          font-size:80%
        span

@@ -3,28 +3,26 @@
     <div class="mui-content">
       <div style="padding-top: 0.266rem;">
         <div  class="select-nav">
-          <router-link class="select-item " :to="{name: 'Taskall'}">
+          <div class="select-item " @click="tab(1)" :class="{active:active == '1'}">
             全部
-          </router-link>
-          <router-link class="select-item " :to="{name : 'Audit'}">
+          </div>
+          <div class="select-item " @click="tab(2)" :class="{active:active == 2}">
             审核中
-          </router-link>
-          <router-link class="select-item "  :to="{name : 'Rejected'}">
+          </div>
+          <div class="select-item "  @click="tab(3)" :class="{active:active == 3}">
             驳回
-          </router-link>
-          <router-link class="select-item "  :to="{name : 'Successful'}">
+          </div>
+          <div class="select-item "  @click="tab(4)" :class="{active:active == 4}">
             审核成功
-          </router-link>
-          <router-link class="select-item "  :to="{name : 'Failure'}">
+          </div>
+          <div class="select-item "  @click="tab(5)" :class="{active:active == 5}">
             审核失败
-          </router-link>
+          </div>
         </div>
       </div>
       <div class="h20 bgf5"></div>
-      <keep-alive>
-        <router-view></router-view>
-      </keep-alive>
 
+      <taskO :active="active"></taskO>
       <!--底部导航-->
       <nav-gation :clicked="false" :clicked2="false"></nav-gation>
     </div>
@@ -33,15 +31,27 @@
 
 <script type="text/ecmascript-6">
   import Navigation from '../navigation/navigation'
+  import taskO from '../personal/taskO.vue'
 
-  //  jroll滚动条
-  import '../../../static/js/jroll.min'
-  import '../../../static/js/jroll-vue-infinite'
+//  //  jroll滚动条
+//  import '../../../static/js/jroll.min'
+//  import '../../../static/js/jroll-vue-infinite'
 
   export default{
     name : 'task',
+    data(){
+        return {
+          active : '1'
+        }
+    },
+    methods : {
+      tab: function (index) {
+        this.active = index
+      }
+    },
     components:{
-      'nav-gation' : Navigation
+      'nav-gation' : Navigation,
+      'taskO' : taskO
     }
   }
 </script>
@@ -62,6 +72,7 @@
       .title{padding: 0 0.4rem 0.29rem }
       .title:after{position: absolute;right: 0;bottom: 0;left: 0;height: 1px;content:'';    -webkit-transform: scaleY(.7);  transform: scaleY(.7);  background-color: #eee;}
       .title .titles .name{vertical-align: super;font-size:0.32rem;margin-left: 0.15rem }
+      .title .titles img{width:0.53rem;height 0.53rem }
       .title .titles .mui-badge{position: absolute;  top: 50%;  right: 15px;  -webkit-transform: translateY(-50%);  transform: translateY(-50%);background: inherit;font-size: 0.3rem;padding: 0}
       .list-data{padding: 0.29rem 0.4rem;position: relative}
       .list-data li{height: 0.6rem;line-height: 0.6rem;font-size: 0.32rem }

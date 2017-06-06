@@ -4,21 +4,21 @@
 
       <div style="padding-top: 0.266rem;">
         <div  class="select-nav">
-          <router-link class="select-item " to="/balance/balall">
+          <div class="select-item "  :class="{active:active===1}" @click="teb(1)">
             全部
-          </router-link>
-          <router-link class="select-item " :to="{name : 'Cash'}">
+          </div>
+          <div class="select-item " :class="{active:active===2}"  @click="teb(2)">
             任务返利
-          </router-link>
-          <router-link class="select-item "  :to="{name : 'Balance2'}">
+          </div>
+          <div class="select-item " :class="{active:active===3}"  @click="teb(3)">
             提现明细
-          </router-link>
+          </div>
         </div>
       </div>
       <div class="h20 bgf5"></div>
-      <keep-alive>
-        <router-view></router-view>
-      </keep-alive>
+
+        <bcontent :active="active"></bcontent>
+
       <!--底部导航-->
       <nav-gation :clicked="false" :clicked2="false"></nav-gation>
     </div>
@@ -27,19 +27,34 @@
 
 <script type="text/ecmascript-6">
   import Navigation from '../navigation/navigation'
+  import bcontent from '../personal/bcontent'
+//
+//  //  jroll滚动条
+//  import '../../../static/js/jroll.min'
+//  import '../../../static/js/jroll-vue-infinite'
 
-  //  jroll滚动条
-  import '../../../static/js/jroll.min'
-  import '../../../static/js/jroll-vue-infinite'
   //mui滚动条下执行a标签跳转
   mui('body').on('tap','a',function () {
     document.location.href=this.href
   })
 
+
   export default{
     name : 'balance',
+    data(){
+        return {
+          active : 1
+        }
+    },
+    methods:{
+      teb:function(s){
+        this.active = s
+
+      }
+    },
     components:{
-      'nav-gation' : Navigation
+      'nav-gation' : Navigation,
+      'bcontent' : bcontent
     }
   }
 

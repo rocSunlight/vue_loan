@@ -19,6 +19,7 @@ import Rejected  from 'components/personal/rejected'
 import Successful  from 'components/personal/successful'
 import Failure   from 'components/personal/failure'
 import Dotask2   from 'components/personal/dotask2'
+import bcontent   from 'components/personal/bcontent'
 import Task from 'components/personal/task'
 import Login from 'components/login/login'
 import Registered from 'components/login/registered'
@@ -36,6 +37,7 @@ const router =  new Router({
   routes: [
     {
       path: '/',
+      name: 'Hello',
       meta: {
         title: '首页',
         auth: false
@@ -51,6 +53,7 @@ const router =  new Router({
       },
       component: Home
     },
+
     {
       path: '/details/:userId',
       name: 'Details',
@@ -83,6 +86,15 @@ const router =  new Router({
         title:'提现'
       },
       component : Withdrawal
+    },
+    {
+      path: '/bcontent',
+      name: '任务详情',
+      meta: {
+        title: 'bcontent',
+        auth: false
+      },
+      component: bcontent
     },
     {
       path : '/balance',
@@ -225,6 +237,17 @@ const router =  new Router({
 router.beforeEach((to, from, next) => {
   let titleStr = ''
   let con=''
+
+  // auth true登录才能访问，false不需要登录，默认true
+  var { auth = true } =  to.meta
+  var isLogin = Boolean(store.state.user.token) //true用户已登录， false用户未登录
+  if (auth && !isLogin && to.path !== '/login') {
+    return next({ path: '/login' })
+  }
+
+  // 继续路由导航
+  next()
+
   // 检测是不是要跳转首页，如果是，则不处理
   if (to.name !== 'Home') {
     // 倒序遍历数组获取匹配到的路由节点，拼接各部分title
@@ -236,21 +259,12 @@ router.beforeEach((to, from, next) => {
       titleStr += con
     }
   }
+
   // 添加站点名
   titleStr += title
   // 更新title
   document.title = titleStr
 
-  // auth true登录才能访问，false不需要登录，默认true
-  var { auth = true } =  to.meta
-  var isLogin = Boolean(store.state.user.token) //true用户已登录， false用户未登录
-  if (auth && !isLogin && to.path !== '/login') {
-    return next({ path: '/login' })
-  }
-
-
-  // 继续路由导航
-  next()
 })
 
 export default router
