@@ -6,7 +6,7 @@ import user from './user'
 
 Vue.use(Vuex)
 const state = {
-  urlIp : '192.168.1.158:8088'
+  urlIp : '192.168.1.159:8088'
 }
 
 export default new Vuex.Store({

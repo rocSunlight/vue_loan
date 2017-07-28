@@ -95,7 +95,7 @@
             1000)
         }
       }
-      $.ajax('http://192.168.1.168:8088/api/code/send_reset', {
+      $.ajax('http://192.168.1.158:8088/api/code/send_reset', {
         type: 'POST',
         dataType: 'json',
         data: {

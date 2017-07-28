@@ -6,56 +6,56 @@
         <!--轮播图-->
       <div class="jp-content">
           <jroll-infinite class="jroll-scroll" id="wrapper">
-        <div class="swiper-container">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <router-link to="/">
-                <img width="100%" src="static/image/banner.png" alt="广告图" @click="close()">
-              </router-link>
-            </div>
-            <div class="swiper-slide">
-              <router-link to="/">
-                <img  width="100%" src="static/image/banner.png" alt="广告图">
-              </router-link>
-            </div>
-          </div>
-          <!-- 分页器 -->
-          <div class="swiper-pagination"></div>
-        </div>
-
-        <div class="list-title">
-          <em class="border-2px redBg"></em><span class="title">任务精选</span>
-        </div>
-
-        <ul class="list-item">
-          <li class="item" v-for="(item,$index) in someData">
-            <router-link :to="{ name: 'Details', params: { userId: item.id }}" replace :urlid="item.id">
-              <div class="item-left">
-                <img :src="'http://'+$store.state.urlIp+item.c_img" :alt="item.c_name">
-                <span class="item-name" v-text="item.c_name"> </span>
-                <span class="text-right"><i class="jp-ico_residual_task"></i>剩余佣金 <span>{{item.money*item.last_num}}</span> 元</span>
+            <div class="swiper-container">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <router-link to="/">
+                    <img width="100%" src="static/image/banner.png" alt="广告图" @click="close()">
+                  </router-link>
+                </div>
+                <div class="swiper-slide">
+                  <router-link to="/">
+                    <img  width="100%" src="static/image/banner.png" alt="广告图">
+                  </router-link>
+                </div>
               </div>
-              <div class="item-right">
+              <!-- 分页器 -->
+              <div class="swiper-pagination"></div>
+            </div>
 
-                <div class="item-div">
-                  <span>投资本金 <span>{{item.capital}}元</span></span>
-                  <span>投资利息 <span><strong>{{item.interest_rate}}</strong>元</span></span>
-                </div>
-                <div class="item-div">
-                  <span>投资期限 <span>{{item.duration}}天</span></span>
-                  <span>剩余任务 <span>{{item.last_num}}个</span></span>
-                </div>
-                <div class="price">
-                  <div class="new-price">
-                    <span class="text">任务返利</span>
-                    <span class="prices">￥<em>{{item.money}}</em></span>
+            <div class="list-title">
+              <em class="border-2px redBg"></em><span class="title">任务精选</span>
+            </div>
+
+            <ul class="list-item">
+              <li class="item" v-for="(item,$index) in someData">
+                <router-link :to="{ name: 'Details', params: { userId: item.id }}" replace :urlid="item.id">
+                  <div class="item-left">
+                    <img :src="'http://'+$store.state.urlIp+item.c_img" :alt="item.c_name">
+                    <span class="item-name" v-text="item.c_name"> </span>
+                    <span class="text-right"><i class="jp-ico_residual_task"></i>剩余佣金 <span>{{item.money*item.last_num}}</span> 元</span>
                   </div>
+                  <div class="item-right">
 
-                </div>
-              </div>
-            </router-link>
-          </li>
-        </ul>
+                    <div class="item-div">
+                      <span>投资本金 <span>{{item.capital}}元</span></span>
+                      <span>投资利息 <span><strong>{{item.interest_rate}}</strong>元</span></span>
+                    </div>
+                    <div class="item-div">
+                      <span>投资期限 <span>{{item.duration}}天</span></span>
+                      <span>剩余任务 <span>{{item.last_num}}个</span></span>
+                    </div>
+                    <div class="price">
+                      <div class="new-price">
+                        <span class="text">任务返利</span>
+                        <span class="prices">￥<em>{{item.money}}</em></span>
+                      </div>
+
+                    </div>
+                  </div>
+                </router-link>
+              </li>
+            </ul>
         </jroll-infinite>
       </div>
       <!--底部导航-->
@@ -107,6 +107,7 @@
       var jroll = new JRoll("#wrapper");
       //do something，例：动态修改scroller的内容，使scroller的高度发生变化
       jroll.refresh();
+
     },
     mounted(){
       //实例化轮埠图
@@ -116,42 +117,28 @@
         // 如果需要分页器
         pagination: '.swiper-pagination',
       })
-      // 扩展API加载完毕后调用onPlusReady回调函数
-      document.addEventListener( "plusready", onPlusReady, false );
 
-      // 扩展API加载完毕，现在可以正常调用扩展API
-      function onPlusReady() {
-          if(_this.$route.name === 'Hello'){
-//            var _toast = false;
-//            //用于修改系统自动的toast事件
-//            mui.back = function() {
-//              if(!_toast || !_toast.isVisible()) {
-//                _toast = mui.toast('点击确认退出', {});
-//              } else {
-//                plus.runtime.quit();
-//              }
-//            }
-            plus.key.addEventListener( "backbutton", onKeyBack, false );
-          }
+      //安卓返回键监控
+      var backButtonPress = 0;
+      mui.back = function(event) {
 
-      }
-
-      function onKeyBack() {
         if(_this.$route.name === 'Hello'){
-
-          window.history.forward(1);
-          mui.confirm('确定要退出闪财宝吗？', '提示', new Array('取消', '确认'), function (e) {
-            if (e.index == 1) {
-              plus.runtime.quit()
-            } else {
-            }
-          });
+          backButtonPress++;
+          if (backButtonPress > 1) {
+            plus.runtime.quit();
+          } else {
+            plus.nativeUI.toast('weqweqw');
+          }
+          setTimeout(function() {
+            backButtonPress = 0;
+          }, 1000);
+        }else {
+          _this.$router.go(-1)
         }
 
+
       }
-
     },
-
 
     components: {
       'nav-gation': Navigation,
@@ -214,6 +201,8 @@
       }
     }
   }
+
+
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">

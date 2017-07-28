@@ -123,7 +123,7 @@
 
   mui.ready(function() {
     mui(document).on('submit', '#registerForm1', function() {
-      mui.ajax('http://192.168.1.109:8088/api/user/register', {
+      mui.ajax('http://192.168.1.158:8088/api/user/register', {
         type: 'POST',
         dataType: 'json',
         data: {
